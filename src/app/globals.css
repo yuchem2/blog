@@ -1,0 +1,83 @@
+@import "tailwindcss";
+
+@theme {
+  /* 기존 색상 변수 */
+  --color-primary: var(--primary);
+  --color-secondary: var(--secondary);
+  --color-text-main: var(--text-main);
+  --color-text-sub: var(--text-sub);
+  --color-bg-main: var(--bg-main);
+  --color-bg-sub: var(--bg-sub);
+  --color-border-main: var(--border-main);
+  --color-code-bg: var(--code-bg);
+  --color-code-text: var(--code-text);
+
+  /* Button 컴포넌트용 색상 변수 */
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary-foreground: var(--secondary-foreground);
+
+  /* 폰트 */
+  --font-sans: var(--font-system);
+}
+
+@layer base {
+  :root {
+    --font-system: ui-sans-serif, system-ui, sans-serif;
+
+    /* 기본 테마 */
+    --primary: #B79CFF;
+    --primary-foreground: #FFFFFF;
+    --secondary: #F3B9FF;
+    --secondary-foreground: #1B1B1B;
+    --text-main: #1B1B1B;
+    --text-sub: #808080;
+    --border-main: #e5e7eb;
+    --bg-main: #FFFFFF;
+    --bg-sub: #f3f4f6;
+    --code-bg: #e9eef6;
+    --code-text: #575b5f;
+
+    /* Button용 변수 (Light) */
+    --input: #e5e7eb;
+    --ring: #B79CFF;
+    --accent: #f3f4f6;
+    --accent-foreground: #1B1B1B;
+    --destructive: #ef4444;
+    --destructive-foreground: #FFFFFF;
+  }
+
+  .dark {
+    /* 다크 테마 */
+    --primary: #B79CFF;
+    --primary-foreground: #1B1B1B;
+    --secondary: #F3B9FF;
+    --secondary-foreground: #1B1B1B;
+    --text-main: #E0E0E0;
+    --text-sub: #A0A0A0;
+    --border-main: #333333; /* 다크모드 테두리 색상 변경 */
+    --bg-main: #1B1B1B;
+    --bg-sub: #2D2D2D;
+    --code-bg: #333537;
+    --code-text: #a2a9b0;
+
+    /* Button용 변수 (Dark) */
+    --input: #333333; /* input 테두리도 함께 변경 */
+    --ring: #B79CFF;
+    --accent: #2D2D2D;
+    --accent-foreground: #E0E0E0;
+    --destructive: #ef4444;
+    --destructive-foreground: #FFFFFF;
+  }
+
+  body {
+    background-color: var(--bg-main);
+    color: var(--text-main);
+    transition: background-color 0.3s ease, color 0.3s ease;
+  }
+}
