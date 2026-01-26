@@ -1,24 +1,62 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+<div align="center">
 
-## Getting Started
+# 📔 Yunio's Blog & Portfolio
 
-First, run the development server:
+[**[ Visit the Blog at yunio.dev ]**](https://yunio.dev)
+
+</div>
+
+---
+
+This is a personal blog and portfolio website for Yunio (윤재현), built with Next.js 15 (App Router). The project aims to provide a platform for sharing knowledge, showcasing work, and growing as a developer.
+
+## ✨ Features
+
+- **Server-First Architecture:** Optimized for performance and SEO using Next.js Server Components by default.
+- **Notion API Integration (Planned):** Content will be managed and fetched from Notion databases.
+- **Modern UI/UX:** Built with Tailwind CSS v4, `next-themes` for dark/light mode, and `Pretendard` font.
+- **Interactive Elements (Planned):** Features like Graph View (Obsidian style), comments (Giscus), and real-time page views.
+- **SEO & Analytics (Planned):** Comprehensive SEO optimization and Google Analytics integration.
+
+## 🚀 Tech Stack
+
+- **Framework:** Next.js 15 (App Router)
+- **Styling:** Tailwind CSS v4, `next-themes`
+- **CMS:** Notion API
+- **Icons:** Lucide React
+- **Animation:** Framer Motion
+- **Deployment:** Vercel
+- **Font:** Pretendard
+
+## 🛠️ Getting Started
+
+First, clone the repository and install dependencies:
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
+git clone [YOUR_REPOSITORY_URL]
+cd yunios-blog
+pnpm install
+```
+
+Then, run the development server:
+
+```bash
 pnpm dev
-# or
-bun dev
 ```
 
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## 📝 Project Status
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+This project is currently under active development. Refer to `DEVELOPMENT.md` for the detailed feature roadmap and `AGENTS.md` for agent development guidelines.
+
+## 🚀 Deployment
+
+This project is deployed on [Vercel](https://vercel.com/) and accessible via the custom domain `yunio.dev`.
+
+## 🤖 Developed Solely by Gemini AI
+
+This project was developed entirely by a Gemini AI agent. The agent was responsible for setting up the project, implementing features, refactoring code, and ensuring adherence to defined architectural and coding guidelines, based on user instructions. This demonstrates the capability of AI in end-to-end software development.
 
 ## Learn More
 
@@ -28,9 +66,3 @@ To learn more about Next.js, take a look at the following resources:
 - [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
 
 You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
