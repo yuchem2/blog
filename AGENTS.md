@@ -13,6 +13,10 @@ This document defines the core principles and guidelines for the Gemini AI agent
 - **Consistency:** Maintain a consistent code style and conventions throughout the project.
 - **Modern Syntax:** Actively use modern ES6+ and TypeScript syntax, but prioritize readability.
 - **Reusability:** Encapsulate reusable UI and logic into separate components or utility functions to promote reusability.
+- **Import Order:** Follow a strict import order, grouped and separated by newlines:
+  1.  React & Next.js framework modules (`react`, `next/*`)
+  2.  External libraries (e.g., `lucide-react`, `mermaid`)
+  3.  Internal modules & components (e.g., `@/components/*`, `@/lib/*`)
 
 ## 3. Version Control
 

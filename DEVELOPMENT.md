@@ -5,7 +5,7 @@ This document is a development guide for the Gemini CLI agent to reference when 
 ## 🚀 Tech Stack
 - **Framework:** Next.js 15 (App Router)
 - **Styling:** Tailwind CSS v4 + `next-themes` (Dark/Light mode)
-- **CMS:** Notion API (`notion-client`, `react-notion-x`)
+- **CMS:** Notion API (`@notionhq/client`)
 - **Icons:** Lucide React
 - **Animation:** Framer Motion
 - **Analytics:** Google Analytics 4 (`@next/third-parties`)
@@ -28,6 +28,7 @@ This document is a development guide for the Gemini CLI agent to reference when 
   - [x] Set up Prettier with custom formatting rules.
   - [x] Configure ESLint to work with Prettier.
   - [x] Resolve initial linting errors.
+  - [x] Establish and apply a consistent import order rule.
 
 ## 🎨 Design System
 - **Font:** `Pretendard` (Variable)
@@ -41,15 +42,19 @@ This document is a development guide for the Gemini CLI agent to reference when 
 
 ## 🛠️ Feature Roadmap (To-be Implemented)
 
-### 1. Core Functionality: Notion API Integration
-- [ ] Set up `NOTION_TOKEN` and `DATABASE_ID` in `.env.local`.
-- [ ] Complete `src/lib/notion.ts` (logic to fetch database entries).
-- [ ] Apply `react-notion-x` renderer in `src/app/blog/[slug]/page.tsx`.
+### 1. Core Functionality: Notion API Integration (Completed)
+- [x] Set up `NOTION_TOKEN` and `NOTION_DATA_SOURCE_ID` in `.env.local`.
+- [x] Centralize environment variable access in `src/lib/env.ts`.
+- [x] Implement functions to fetch posts and blocks using `@notionhq/client`.
+- [x] Implement full SSR rendering for post content, removing `react-notion-x`.
+- [x] Connect main and blog pages to the Notion API.
 
 ### 2. UI/UX Enhancements
+- [x] **Post Detail UI:** Implement basic SSR block renderer (`NotionBlock.tsx`).
+  - [x] Add syntax highlighting for code blocks (`CodeBlock.tsx`).
+  - [x] Add Mermaid diagram rendering.
 - [ ] **Main Page UI:** Refine the main page layout, focusing on the "Recent Posts" section and overall presentation.
 - [ ] **Blog Page UI:** Improve the blog list page (`/blog`), including pagination and potential filtering/search functionality.
-- [ ] **Post Detail UI:** Enhance the UI for individual blog posts (`/blog/[slug]`), focusing on readability, code blocks, and image presentation.
 - [ ] **About Page UI:** Design and implement the content and layout for the About page.
 - [ ] **Resume Page UI:** Design and implement the Resume page, considering either a PDF embed or a custom-designed layout.
 
@@ -71,5 +76,5 @@ This document is a development guide for the Gemini CLI agent to reference when 
 - **Identity:** The Korean name is 윤재현, but use the English name **yunio**. The blog name is **yunio's blog**.
 
 ---
-**Last Updated:** 2024-07-29
-**Agent Status:** Initial setup and design phase complete. Ready for core functionality implementation.
+**Last Updated:** 2024-07-30
+**Agent Status:** Core functionality (Notion API integration and SSR rendering) complete. Ready for UI/UX enhancements.
