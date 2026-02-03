@@ -1,8 +1,7 @@
 'use client';
 
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useTheme } from 'next-themes';
-import mermaid from 'mermaid';
 import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
 import { vscDarkPlus, prism } from 'react-syntax-highlighter/dist/esm/styles/prism';
 
@@ -14,11 +13,17 @@ interface CodeBlockProps {
 export function CodeBlock({ language, code }: CodeBlockProps) {
   const { resolvedTheme } = useTheme();
   const mermaidRef = useRef<HTMLDivElement>(null);
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
 
   useEffect(() => {
     const renderMermaid = async () => {
-      if (language === 'mermaid' && mermaidRef.current) {
+      if (language === 'mermaid' && mounted && mermaidRef.current) {
         try {
+          const mermaid = (await import('mermaid')).default;
           mermaid.initialize({
             startOnLoad: false,
             theme: resolvedTheme === 'dark' ? 'dark' : 'default',
@@ -39,23 +44,22 @@ export function CodeBlock({ language, code }: CodeBlockProps) {
         }
       }
     };
-
     renderMermaid();
-  }, [language, code, resolvedTheme]);
+  }, [language, code, resolvedTheme, mounted]);
+
+  if (!mounted) {
+    return (
+      <pre className="p-4 rounded-lg bg-bg-sub overflow-x-auto">
+        <code>{code}</code>
+      </pre>
+    );
+  }
 
   if (language === 'mermaid') {
     return (
       <div className="my-4 p-4 flex justify-center items-center bg-bg-sub rounded-lg border border-border-main overflow-x-auto">
         <div ref={mermaidRef} className="w-full flex justify-center" />
       </div>
-    );
-  }
-
-  if (!resolvedTheme) {
-    return (
-      <pre className="p-4 rounded-lg bg-bg-sub overflow-x-auto">
-        <code>{code}</code>
-      </pre>
     );
   }
 

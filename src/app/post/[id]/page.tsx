@@ -1,4 +1,5 @@
 import { notFound } from 'next/navigation';
+import type { Metadata } from 'next';
 
 import { getDatabasePosts, getPostById, getPageBlocks } from '@/lib/notion-server';
 import { NotionBlock } from '@/components/NotionBlock';
@@ -15,6 +16,17 @@ export async function generateStaticParams() {
   }));
 }
 
+export async function generateMetadata({ params }: { params: Promise<{ id: string }> }): Promise<Metadata> {
+  const { id } = await params;
+  const post = await getPostById(id);
+  if (!post) {
+    return {};
+  }
+  return {
+    title: post.title,
+  };
+}
+
 export default async function PostPage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params;
 
@@ -26,7 +38,8 @@ export default async function PostPage({ params }: { params: Promise<{ id: strin
   const blocks = await getPageBlocks(post.id);
 
   return (
-    <article className="max-w-3xl mx-auto">
+    // max-w-3xl 제거
+    <article>
       <header className="mb-10 text-center">
         <h1 className="text-4xl font-extrabold mb-4 leading-tight">{post.title}</h1>
         <div className="flex flex-col items-center gap-2 text-text-sub text-sm">

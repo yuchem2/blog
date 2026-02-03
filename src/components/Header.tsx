@@ -1,8 +1,8 @@
 import Link from 'next/link';
 import Image from 'next/image';
 
-import { ThemeToggle } from './ThemeToggle';
-import { Navigation } from './Navigation';
+import { ThemeToggle } from '@/components/ThemeToggle';
+import { Navigation } from '@/components/Navigation';
 
 export function Header() {
   return (

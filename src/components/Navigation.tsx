@@ -2,20 +2,35 @@
 
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
+import clsx from 'clsx';
 
-import { Button } from './Button';
+import { Button } from '@/components/Button';
 
 export function Navigation() {
   const pathname = usePathname();
 
+  const navItems = [
+    { href: '/about', label: 'About' },
+    { href: '/resume', label: 'Resume' },
+  ];
+
   return (
     <nav className="flex gap-4">
-      <Button variant={pathname === '/about' ? 'secondary' : 'ghost'} asChild>
-        <Link href="/about">About</Link>
-      </Button>
-      <Button variant={pathname === '/resume' ? 'secondary' : 'ghost'} asChild>
-        <Link href="/resume">Resume</Link>
-      </Button>
+      {navItems.map((item) => {
+        const isActive = pathname === item.href;
+        return (
+          <Button
+            key={item.href}
+            variant="ghost"
+            className={clsx({
+              'bg-primary/10 text-primary dark:bg-primary/20': isActive,
+            })}
+            asChild
+          >
+            <Link href={item.href}>{item.label}</Link>
+          </Button>
+        );
+      })}
     </nav>
   );
 }

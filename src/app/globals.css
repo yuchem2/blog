@@ -38,7 +38,7 @@
     --text-main: #1B1B1B;
     --text-sub: #808080;
     --border-main: #e5e7eb;
-    --bg-main: #FFFFFF;
+    --bg-main: #fafafa; /* #FFFFFF -> #fafafa */
     --bg-sub: #f3f4f6;
     --code-bg: #e9eef6;
     --code-text: #575b5f;

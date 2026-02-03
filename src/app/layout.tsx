@@ -1,9 +1,10 @@
 import type { Metadata } from 'next';
+import type { ReactNode } from 'react';
 import localFont from 'next/font/local';
 
 import { Providers } from '@/components/providers';
 import { Header } from '@/components/Header';
-
+import { Footer } from '@/components/Footer';
 import './globals.css';
 
 const pretendard = localFont({
@@ -14,7 +15,10 @@ const pretendard = localFont({
 });
 
 export const metadata: Metadata = {
-  title: "yunio's blog",
+  title: {
+    template: '%s | yunio.dev',
+    default: "yunio's blog",
+  },
   description: 'Built with Next.js and Notion API',
   icons: {
     icon: [
@@ -37,7 +41,7 @@ export const metadata: Metadata = {
     ],
     other: [
       {
-        rel: 'android-icon-192x192',
+        rel: 'android-icon-192x192.png',
         url: '/android-icon-192x192.png',
       },
     ],
@@ -48,14 +52,17 @@ export const metadata: Metadata = {
 export default function RootLayout({
   children,
 }: Readonly<{
-  children: React.ReactNode;
+  children: ReactNode; // 명시적으로 import한 ReactNode 사용
 }>) {
   return (
     <html lang="ko" className={pretendard.variable} suppressHydrationWarning>
       <body>
         <Providers>
-          <Header />
-          <main className="w-full max-w-3xl mx-auto px-6 py-16">{children}</main>
+          <div className="sticky top-0 z-50 bg-bg-main">
+            <Header />
+          </div>
+          <main className="w-full max-w-3xl lg:max-w-4xl xl:max-w-5xl mx-auto px-6 pt-20 pb-16 flex-grow">{children}</main>
+          <Footer />
         </Providers>
       </body>
     </html>

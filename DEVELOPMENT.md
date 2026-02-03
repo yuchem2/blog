@@ -35,7 +35,7 @@ This document is a development guide for the Gemini CLI agent to reference when 
 - **Colors:**
   - **Primary:** `#B79CFF`
   - **Secondary:** `#F3B9FF`
-  - **Background (Light/Dark):** `#FFFFFF` / `#1B1B1B`
+  - **Background (Light/Dark):** `#fafafa` / `#1B1B1B`
   - **Sub Background (Light/Dark):** `#f3f4f6` / `#2D2D2D`
   - **Text (Light/Dark):** `#1B1B1B` / `#E0E0E0`
   - **Border (Light/Dark):** `#e5e7eb` / `#333333`
@@ -51,10 +51,21 @@ This document is a development guide for the Gemini CLI agent to reference when 
 
 ### 2. UI/UX Enhancements
 - [x] **Routing:** Set main page as blog index and update post route to `/post/[id]`.
-- [x] **Post Detail UI:** Implement basic SSR block renderer (`NotionBlock.tsx`).
+- [x] **Layout & Theming:**
+  - [x] Implement a sticky header.
+  - [x] Implement a footer that remains at the bottom of the viewport.
+  - [x] Adjust main content width to be responsive (`max-w-3xl` to `5xl`).
+  - [x] Refine active navigation link style for better visibility.
+  - [x] Soften the light mode background color for better eye comfort.
+- [ ] **Main Page / Blog Index UI:**
+  - [ ] Refine the layout by adding a sidebar for categories/tags.
+  - [ ] Improve post list presentation.
+  - [ ] Implement pagination or infinite scroll.
+- [ ] **Post Detail UI:**
+  - [x] Implement basic SSR block renderer (`NotionBlock.tsx`).
   - [x] Add syntax highlighting for code blocks (`CodeBlock.tsx`).
   - [x] Add Mermaid diagram rendering.
-- [ ] **Main Page / Blog Index UI:** Refine the blog list layout, including pagination and potential filtering/search functionality.
+  - [ ] Refine post detail layout (e.g., add Table of Contents, improve header).
 - [ ] **About Page UI:** Design and implement the content and layout for the About page.
 - [ ] **Resume Page UI:** Design and implement the Resume page, considering either a PDF embed or a custom-designed layout.
 
@@ -77,4 +88,4 @@ This document is a development guide for the Gemini CLI agent to reference when 
 
 ---
 **Last Updated:** 2024-07-30
-**Agent Status:** Core functionality (Notion API integration and SSR rendering) complete. Ready for UI/UX enhancements.
+**Agent Status:** Layout refinement complete. Ready for next UI/UX enhancements.

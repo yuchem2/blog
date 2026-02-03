@@ -17,16 +17,14 @@ export default async function HomePage() {
   }
 
   return (
-    <div className="max-w-3xl mx-auto px-6 py-20">
-      <h1 className="text-3xl font-extrabold mb-12 tracking-tight">Recent Posts</h1>
+    <div className="py-12 flex-grow flex flex-col">
+      <h1 className="text-4xl font-extrabold mb-12 tracking-tighter text-center">Recent Posts</h1>
 
       <div className="space-y-12">
         {posts.length > 0 ? (
           posts.map((post) => (
             <article key={post.id} className="group cursor-pointer">
               <Link href={`/post/${post.id}`}>
-                {' '}
-                {/* /blog/ -> /post/ */}
                 <span className="text-sm text-text-sub tabular-nums">{new Date(post.createdAt).toLocaleDateString()}</span>
                 <h2 className="text-2xl font-bold mt-1 group-hover:text-primary transition-colors">{post.title}</h2>
                 <div className="flex gap-2 mt-3">
@@ -40,7 +38,9 @@ export default async function HomePage() {
             </article>
           ))
         ) : (
-          <p className="text-text-sub">게시글이 없습니다.</p>
+          <div className="flex-grow flex items-center justify-center">
+            <p className="text-text-sub">게시글이 없습니다.</p>
+          </div>
         )}
       </div>
     </div>
