@@ -2,20 +2,18 @@
 
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { Button } from '@/components/Button';
+
+import { Button } from './Button';
 
 export function Navigation() {
   const pathname = usePathname();
 
   return (
     <nav className="flex gap-4">
-      <Button variant="ghost" className={pathname.startsWith('/blog') ? 'bg-bg-sub text-text-main' : ''} asChild>
-        <Link href="/blog">Blog</Link>
-      </Button>
-      <Button variant="ghost" className={pathname === '/about' ? 'bg-bg-sub text-text-main' : ''} asChild>
+      <Button variant={pathname === '/about' ? 'secondary' : 'ghost'} asChild>
         <Link href="/about">About</Link>
       </Button>
-      <Button variant="ghost" className={pathname === '/resume' ? 'bg-bg-sub text-text-main' : ''} asChild>
+      <Button variant={pathname === '/resume' ? 'secondary' : 'ghost'} asChild>
         <Link href="/resume">Resume</Link>
       </Button>
     </nav>

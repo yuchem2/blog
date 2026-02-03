@@ -50,11 +50,11 @@ This document is a development guide for the Gemini CLI agent to reference when 
 - [x] Connect main and blog pages to the Notion API.
 
 ### 2. UI/UX Enhancements
+- [x] **Routing:** Set main page as blog index and update post route to `/post/[id]`.
 - [x] **Post Detail UI:** Implement basic SSR block renderer (`NotionBlock.tsx`).
   - [x] Add syntax highlighting for code blocks (`CodeBlock.tsx`).
   - [x] Add Mermaid diagram rendering.
-- [ ] **Main Page UI:** Refine the main page layout, focusing on the "Recent Posts" section and overall presentation.
-- [ ] **Blog Page UI:** Improve the blog list page (`/blog`), including pagination and potential filtering/search functionality.
+- [ ] **Main Page / Blog Index UI:** Refine the blog list layout, including pagination and potential filtering/search functionality.
 - [ ] **About Page UI:** Design and implement the content and layout for the About page.
 - [ ] **Resume Page UI:** Design and implement the Resume page, considering either a PDF embed or a custom-designed layout.
 
