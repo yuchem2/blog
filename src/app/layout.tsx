@@ -5,6 +5,7 @@ import localFont from 'next/font/local';
 import { Providers } from '@/components/providers';
 import { Header } from '@/components/Header';
 import { Footer } from '@/components/Footer';
+import { ScrollToTop } from '@/components/ScrollToTop';
 import './globals.css';
 
 const pretendard = localFont({
@@ -52,16 +53,17 @@ export const metadata: Metadata = {
 export default function RootLayout({
   children,
 }: Readonly<{
-  children: ReactNode; // 명시적으로 import한 ReactNode 사용
+  children: ReactNode;
 }>) {
   return (
     <html lang="ko" className={pretendard.variable} suppressHydrationWarning>
       <body>
         <Providers>
+          <ScrollToTop />
           <div className="sticky top-0 z-50 bg-bg-main">
             <Header />
           </div>
-          <main className="w-full max-w-3xl lg:max-w-4xl xl:max-w-5xl mx-auto px-6 pt-20 pb-16 flex-grow">{children}</main>
+          <main className="w-full max-w-3xl lg:max-w-4xl xl:max-w-5xl mx-auto px-6 pt-8 pb-16 flex-grow">{children}</main> {/* pt-4 -> pt-8 */}
           <Footer />
         </Providers>
       </body>

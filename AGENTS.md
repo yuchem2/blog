@@ -17,7 +17,9 @@ This document defines the core principles and guidelines for the Gemini AI agent
   1.  React & Next.js framework modules (`react`, `next/*`)
   2.  External libraries (e.g., `lucide-react`, `mermaid`)
   3.  Internal modules & components (e.g., `@/components/*`, `@/lib/*`)
-- **Adhere to Prettier:** All code must be formatted according to the `.prettierrc` configuration file before finalizing any changes.
+- **Adhere to Prettier:** All code must be formatted according to the `.prettierrc` configuration file before finalizing any changes. This includes:
+  - **No `any` type:** The `any` type is strictly forbidden. Use specific types, `unknown`, or generics.
+  - **Line Endings:** All files must use LF (`\n`) line endings.
 
 ## 3. Version Control
 

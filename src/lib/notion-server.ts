@@ -1,6 +1,11 @@
-import { Client, isFullPage } from '@notionhq/client';
-import { PageObjectResponse, BlockObjectResponse } from '@notionhq/client/build/src/api-endpoints';
-
+import {
+  Client,
+  isFullPage,
+  type PageObjectResponse,
+  type BlockObjectResponse,
+  type QueryDataSourceParameters,
+  type GetDataSourceResponse,
+} from '@notionhq/client';
 import { NOTION_TOKEN } from './env';
 
 export const notionClient = new Client({
@@ -13,9 +18,17 @@ export interface BlogPost {
   createdAt: string;
   updatedAt: string;
   tags: string[];
+  category: string;
+  project: string;
+  description: string;
 }
 
-// Notion ID를 정규화하는 함수 (하이픈 추가)
+export interface PaginatedPosts {
+  posts: BlogPost[];
+  nextCursor: string | null;
+  hasMore: boolean;
+}
+
 function normalizeId(id: string): string {
   if (id.length === 32) {
     return `${id.slice(0, 8)}-${id.slice(8, 12)}-${id.slice(12, 16)}-${id.slice(16, 20)}-${id.slice(20)}`;
@@ -30,6 +43,9 @@ function mapPageToBlogPost(page: PageObjectResponse): BlogPost {
   const createdAt = properties.createdAt?.type === 'date' ? (properties.createdAt.date?.start ?? '') : '';
   const updatedAt = properties.updatedAt?.type === 'last_edited_time' ? properties.updatedAt.last_edited_time : '';
   const tags = properties.tags?.type === 'multi_select' ? properties.tags.multi_select.map((tag) => tag.name) : [];
+  const category = properties.category?.type === 'select' ? (properties.category.select?.name ?? '') : '';
+  const project = properties.project?.type === 'select' ? (properties.project.select?.name ?? '') : '';
+  const description = properties.description?.type === 'rich_text' ? (properties.description.rich_text[0]?.plain_text ?? '') : '';
 
   return {
     id: normalizeId(page.id),
@@ -37,31 +53,104 @@ function mapPageToBlogPost(page: PageObjectResponse): BlogPost {
     createdAt,
     updatedAt,
     tags,
+    category,
+    project,
+    description,
   };
 }
 
-export async function getDatabasePosts(dataSourceId: string): Promise<BlogPost[]> {
+export async function getDatabasePosts(
+  dataSourceId: string,
+  cursor?: string,
+  pageSize: number = 10,
+  filter?: { category?: string; project?: string },
+): Promise<PaginatedPosts> {
   try {
-    const response = await notionClient.dataSources.query({
-      data_source_id: dataSourceId,
-      filter: {
+    type AndFilter = Extract<QueryDataSourceParameters['filter'], { and: unknown }>;
+    type FilterCondition = AndFilter['and'][number];
+
+    const filterConditions: FilterCondition[] = [
+      {
         property: 'status',
         status: {
           equals: 'Published',
         },
       },
+    ];
+
+    if (filter?.category) {
+      filterConditions.push({
+        property: 'category',
+        select: {
+          equals: filter.category,
+        },
+      });
+    }
+
+    if (filter?.project) {
+      filterConditions.push({
+        property: 'project',
+        select: {
+          equals: filter.project,
+        },
+      });
+    }
+
+    const queryFilter: QueryDataSourceParameters['filter'] = {
+      and: filterConditions,
+    };
+
+    const response = await notionClient.dataSources.query({
+      data_source_id: dataSourceId,
+      filter: queryFilter,
       sorts: [
         {
           property: 'createdAt',
           direction: 'descending',
         },
       ],
+      page_size: pageSize,
+      start_cursor: cursor,
     });
 
-    return response.results.filter((page): page is PageObjectResponse => isFullPage(page)).map(mapPageToBlogPost);
+    const posts = response.results.filter((page): page is PageObjectResponse => isFullPage(page)).map(mapPageToBlogPost);
+
+    return {
+      posts,
+      nextCursor: response.next_cursor,
+      hasMore: response.has_more,
+    };
   } catch (error) {
     console.error('Error fetching database posts:', error);
-    return [];
+    return { posts: [], nextCursor: null, hasMore: false };
+  }
+}
+
+export async function getDatabaseProperties(dataSourceId: string): Promise<{ categories: string[]; projects: string[] }> {
+  try {
+    const response = await notionClient.dataSources.retrieve({ data_source_id: dataSourceId });
+
+    const categories: string[] = [];
+    const projects: string[] = [];
+
+    if ('properties' in response) {
+      const properties = response.properties as GetDataSourceResponse['properties'];
+
+      const categoryProperty = properties.category;
+      if (categoryProperty?.type === 'select') {
+        categories.push(...categoryProperty.select.options.map((option) => option.name));
+      }
+
+      const projectProperty = properties.project;
+      if (projectProperty?.type === 'select') {
+        projects.push(...projectProperty.select.options.map((option) => option.name));
+      }
+    }
+
+    return { categories, projects };
+  } catch (error) {
+    console.error('Error fetching database properties:', error);
+    return { categories: [], projects: [] };
   }
 }
 
@@ -78,7 +167,6 @@ export async function getPostById(pageId: string): Promise<BlogPost | undefined>
   }
 }
 
-// 페이지의 모든 블록을 가져오는 함수
 export async function getPageBlocks(blockId: string): Promise<BlockObjectResponse[]> {
   let blocks: BlockObjectResponse[] = [];
   let cursor: string | undefined;

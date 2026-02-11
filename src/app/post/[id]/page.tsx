@@ -1,3 +1,4 @@
+import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import type { Metadata } from 'next';
 
@@ -11,11 +12,12 @@ export async function generateStaticParams() {
   if (!NOTION_DATA_SOURCE_ID) return [];
 
   const posts = await getDatabasePosts(NOTION_DATA_SOURCE_ID);
-  return posts.map((post) => ({
+  return posts.posts.map((post) => ({
     id: post.id,
   }));
 }
 
+// params를 Promise로 처리
 export async function generateMetadata({ params }: { params: Promise<{ id: string }> }): Promise<Metadata> {
   const { id } = await params;
   const post = await getPostById(id);
@@ -24,12 +26,13 @@ export async function generateMetadata({ params }: { params: Promise<{ id: strin
   }
   return {
     title: post.title,
+    description: post.description,
   };
 }
 
+// params를 Promise로 처리
 export default async function PostPage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params;
-
   const post = await getPostById(id);
   if (!post) {
     notFound();
@@ -38,9 +41,23 @@ export default async function PostPage({ params }: { params: Promise<{ id: strin
   const blocks = await getPageBlocks(post.id);
 
   return (
-    // max-w-3xl 제거
     <article>
       <header className="mb-10 text-center">
+        <div className="flex justify-center items-center gap-2 mb-4 text-sm">
+          {post.category && (
+            <Link href={`/?category=${post.category}`} className="text-primary hover:underline">
+              {post.category}
+            </Link>
+          )}
+          {post.project && (
+            <>
+              <span className="text-text-sub">/</span>
+              <Link href={`/?project=${post.project}`} className="text-primary hover:underline">
+                {post.project}
+              </Link>
+            </>
+          )}
+        </div>
         <h1 className="text-4xl font-extrabold mb-4 leading-tight">{post.title}</h1>
         <div className="flex flex-col items-center gap-2 text-text-sub text-sm">
           <div className="flex gap-4">

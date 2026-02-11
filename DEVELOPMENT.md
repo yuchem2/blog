@@ -57,15 +57,15 @@ This document is a development guide for the Gemini CLI agent to reference when 
   - [x] Adjust main content width to be responsive (`max-w-3xl` to `5xl`).
   - [x] Refine active navigation link style for better visibility.
   - [x] Soften the light mode background color for better eye comfort.
-- [ ] **Main Page / Blog Index UI:**
-  - [ ] Refine the layout by adding a sidebar for categories/tags.
-  - [ ] Improve post list presentation.
-  - [ ] Implement pagination or infinite scroll.
-- [ ] **Post Detail UI:**
+- [x] **Main Page / Blog Index UI:**
+  - [x] Refine the layout by adding a sidebar for categories/tags.
+  - [x] Implement multi-filter support for categories and projects.
+  - [x] Implement simple cursor-based pagination.
+- [x] **Post Detail UI:**
   - [x] Implement basic SSR block renderer (`NotionBlock.tsx`).
   - [x] Add syntax highlighting for code blocks (`CodeBlock.tsx`).
   - [x] Add Mermaid diagram rendering.
-  - [ ] Refine post detail layout (e.g., add Table of Contents, improve header).
+  - [x] Display category and project links in the post header.
 - [ ] **About Page UI:** Design and implement the content and layout for the About page.
 - [ ] **Resume Page UI:** Design and implement the Resume page, considering either a PDF embed or a custom-designed layout.
 
@@ -88,4 +88,4 @@ This document is a development guide for the Gemini CLI agent to reference when 
 
 ---
 **Last Updated:** 2024-07-30
-**Agent Status:** Layout refinement complete. Ready for next UI/UX enhancements.
+**Agent Status:** Main page UI and filtering complete. Ready for next tasks.
