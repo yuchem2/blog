@@ -1,33 +1,45 @@
 import Link from 'next/link';
 import { ArrowRight } from 'lucide-react';
-import { getDatabasePosts, PaginatedPosts } from '@/lib/notion-server';
+import { getAllPosts, BlogPost } from '@/lib/notion-server';
 import { NOTION_DATA_SOURCE_ID } from '@/lib/env';
 import { Sidebar } from '@/components/Sidebar';
 import { Pagination } from '@/components/Pagination';
 
-export const revalidate = 3600;
+export const revalidate = 3600; // 직접 값 할당
+
+const POSTS_PER_PAGE = 10;
 
 interface HomePageProps {
   searchParams: Promise<{
     category?: string;
     project?: string;
-    cursor?: string; // cursor 추가
+    page?: string;
   }>;
 }
 
 export default async function HomePage({ searchParams }: HomePageProps) {
-  const { category, project, cursor } = await searchParams;
-  const filter = { category, project };
+  const { category, project, page } = await searchParams;
+  const currentPage = Number(page) || 1;
 
-  let pageData: PaginatedPosts = { posts: [], nextCursor: null, hasMore: false };
-
+  let allPosts: BlogPost[] = [];
   if (NOTION_DATA_SOURCE_ID) {
     try {
-      pageData = await getDatabasePosts(NOTION_DATA_SOURCE_ID, cursor, 10, filter);
+      allPosts = await getAllPosts(NOTION_DATA_SOURCE_ID);
     } catch (error) {
-      console.error('Failed to fetch posts:', error);
+      console.error('Failed to fetch all posts:', error);
     }
   }
+
+  const filteredPosts = allPosts.filter((post) => {
+    const matchesCategory = category ? post.category === category : true;
+    const matchesProject = project ? post.project === project : true;
+    return matchesCategory && matchesProject;
+  });
+
+  const totalPages = Math.ceil(filteredPosts.length / POSTS_PER_PAGE);
+  const startIndex = (currentPage - 1) * POSTS_PER_PAGE;
+  const endIndex = startIndex + POSTS_PER_PAGE;
+  const currentPosts = filteredPosts.slice(startIndex, endIndex);
 
   return (
     <div className="flex flex-col-reverse md:flex-row gap-12">
@@ -37,8 +49,8 @@ export default async function HomePage({ searchParams }: HomePageProps) {
 
       <div className="flex-1 min-w-0">
         <div className="space-y-12">
-          {pageData.posts.length > 0 ? (
-            pageData.posts.map((post) => (
+          {currentPosts.length > 0 ? (
+            currentPosts.map((post) => (
               <article key={post.id} className="group cursor-pointer">
                 <Link href={`/post/${post.id}`}>
                   <span className="text-sm text-text-sub tabular-nums">{new Date(post.createdAt).toLocaleDateString()}</span>
@@ -64,7 +76,7 @@ export default async function HomePage({ searchParams }: HomePageProps) {
           )}
         </div>
 
-        <Pagination nextCursor={pageData.nextCursor} hasMore={pageData.hasMore} />
+        <Pagination totalPages={totalPages} currentPage={currentPage} />
       </div>
     </div>
   );

@@ -1,11 +1,4 @@
-import {
-  Client,
-  isFullPage,
-  type PageObjectResponse,
-  type BlockObjectResponse,
-  type QueryDataSourceParameters,
-  type GetDataSourceResponse,
-} from '@notionhq/client';
+import { Client, isFullPage, type PageObjectResponse, type BlockObjectResponse, type GetDataSourceResponse } from '@notionhq/client';
 import { NOTION_TOKEN } from './env';
 
 export const notionClient = new Client({
@@ -23,17 +16,48 @@ export interface BlogPost {
   description: string;
 }
 
-export interface PaginatedPosts {
-  posts: BlogPost[];
-  nextCursor: string | null;
-  hasMore: boolean;
-}
+// API 호출 사이에 지연을 주기 위한 헬퍼 함수
+const sleep = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
 
-function normalizeId(id: string): string {
-  if (id.length === 32) {
-    return `${id.slice(0, 8)}-${id.slice(8, 12)}-${id.slice(12, 16)}-${id.slice(16, 20)}-${id.slice(20)}`;
+export async function getAllPosts(dataSourceId: string): Promise<BlogPost[]> {
+  let allPosts: BlogPost[] = [];
+  let cursor: string | undefined;
+
+  try {
+    while (true) {
+      const response = await notionClient.dataSources.query({
+        data_source_id: dataSourceId,
+        filter: {
+          property: 'status',
+          status: {
+            equals: 'Published',
+          },
+        },
+        sorts: [
+          {
+            property: 'createdAt',
+            direction: 'descending',
+          },
+        ],
+        start_cursor: cursor,
+      });
+
+      const posts = response.results.filter((page): page is PageObjectResponse => isFullPage(page)).map(mapPageToBlogPost);
+
+      allPosts = [...allPosts, ...posts];
+
+      if (!response.has_more) break;
+
+      cursor = response.next_cursor ?? undefined;
+
+      // API Rate Limit을 피하기 위해 1초 대기
+      await sleep(1000);
+    }
+    return allPosts;
+  } catch (error) {
+    console.error('Error fetching all posts:', error);
+    return [];
   }
-  return id;
 }
 
 function mapPageToBlogPost(page: PageObjectResponse): BlogPost {
@@ -57,73 +81,6 @@ function mapPageToBlogPost(page: PageObjectResponse): BlogPost {
     project,
     description,
   };
-}
-
-export async function getDatabasePosts(
-  dataSourceId: string,
-  cursor?: string,
-  pageSize: number = 10,
-  filter?: { category?: string; project?: string },
-): Promise<PaginatedPosts> {
-  try {
-    type AndFilter = Extract<QueryDataSourceParameters['filter'], { and: unknown }>;
-    type FilterCondition = AndFilter['and'][number];
-
-    const filterConditions: FilterCondition[] = [
-      {
-        property: 'status',
-        status: {
-          equals: 'Published',
-        },
-      },
-    ];
-
-    if (filter?.category) {
-      filterConditions.push({
-        property: 'category',
-        select: {
-          equals: filter.category,
-        },
-      });
-    }
-
-    if (filter?.project) {
-      filterConditions.push({
-        property: 'project',
-        select: {
-          equals: filter.project,
-        },
-      });
-    }
-
-    const queryFilter: QueryDataSourceParameters['filter'] = {
-      and: filterConditions,
-    };
-
-    const response = await notionClient.dataSources.query({
-      data_source_id: dataSourceId,
-      filter: queryFilter,
-      sorts: [
-        {
-          property: 'createdAt',
-          direction: 'descending',
-        },
-      ],
-      page_size: pageSize,
-      start_cursor: cursor,
-    });
-
-    const posts = response.results.filter((page): page is PageObjectResponse => isFullPage(page)).map(mapPageToBlogPost);
-
-    return {
-      posts,
-      nextCursor: response.next_cursor,
-      hasMore: response.has_more,
-    };
-  } catch (error) {
-    console.error('Error fetching database posts:', error);
-    return { posts: [], nextCursor: null, hasMore: false };
-  }
 }
 
 export async function getDatabaseProperties(dataSourceId: string): Promise<{ categories: string[]; projects: string[] }> {
@@ -187,4 +144,11 @@ export async function getPageBlocks(blockId: string): Promise<BlockObjectRespons
   }
 
   return blocks;
+}
+
+function normalizeId(id: string): string {
+  if (id.length === 32) {
+    return `${id.slice(0, 8)}-${id.slice(8, 12)}-${id.slice(12, 16)}-${id.slice(16, 20)}-${id.slice(20)}`;
+  }
+  return id;
 }
