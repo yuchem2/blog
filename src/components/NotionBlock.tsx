@@ -48,20 +48,26 @@ export function NotionBlock({ block }: { block: BlockObjectResponse }) {
       );
     case 'heading_1':
       return (
-        <h1 className="text-3xl font-bold mt-10 mb-4 text-text-main">
-          <RichText text={block.heading_1.rich_text} />
+        <h1 id={block.id} className="text-3xl font-bold mt-10 mb-4 text-text-main scroll-mt-24 group">
+          <a href={`#${block.id}`} className="hover:underline decoration-primary decoration-2">
+            <RichText text={block.heading_1.rich_text} />
+          </a>
         </h1>
       );
     case 'heading_2':
       return (
-        <h2 className="text-2xl font-bold mt-8 mb-3 text-text-main">
-          <RichText text={block.heading_2.rich_text} />
+        <h2 id={block.id} className="text-2xl font-bold mt-8 mb-3 text-text-main scroll-mt-24 group">
+          <a href={`#${block.id}`} className="hover:underline decoration-primary decoration-2">
+            <RichText text={block.heading_2.rich_text} />
+          </a>
         </h2>
       );
     case 'heading_3':
       return (
-        <h3 className="text-xl font-bold mt-6 mb-2 text-text-main">
-          <RichText text={block.heading_3.rich_text} />
+        <h3 id={block.id} className="text-xl font-bold mt-6 mb-2 text-text-main scroll-mt-24 group">
+          <a href={`#${block.id}`} className="hover:underline decoration-primary decoration-2">
+            <RichText text={block.heading_3.rich_text} />
+          </a>
         </h3>
       );
     case 'bulleted_list_item':

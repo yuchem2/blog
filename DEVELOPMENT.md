@@ -48,6 +48,8 @@ This document is a development guide for the Gemini CLI agent to reference when 
 - [x] Implement functions to fetch posts and blocks using `@notionhq/client`.
 - [x] Implement full SSR rendering for post content, removing `react-notion-x`.
 - [x] Connect main and blog pages to the Notion API.
+- [x] Implement ISR (Incremental Static Regeneration) for all pages with a 1-hour revalidation period.
+- [x] Document Notion API integration details in `NOTION_INTEGRATION.md`.
 
 ### 2. UI/UX Enhancements
 - [x] **Routing:** Set main page as blog index and update post route to `/post/[id]`.
@@ -66,6 +68,11 @@ This document is a development guide for the Gemini CLI agent to reference when 
   - [x] Add syntax highlighting for code blocks (`CodeBlock.tsx`).
   - [x] Add Mermaid diagram rendering.
   - [x] Display category and project links in the post header.
+  - [x] **Table of Contents (TOC):**
+    - [x] Implement a sticky TOC sidebar on the right side.
+    - [x] Auto-highlight active headings based on scroll position.
+    - [x] Support smooth scrolling and two-way synchronization (TOC <-> Content).
+    - [x] Ensure consistent behavior on both desktop and mobile.
 - [ ] **About Page UI:** Design and implement the content and layout for the About page.
 - [ ] **Resume Page UI:** Design and implement the Resume page, considering either a PDF embed or a custom-designed layout.
 
@@ -87,5 +94,5 @@ This document is a development guide for the Gemini CLI agent to reference when 
 - **Identity:** The Korean name is 윤재현, but use the English name **yunio**. The blog name is **yunio's blog**.
 
 ---
-**Last Updated:** 2024-07-30
-**Agent Status:** Main page UI and filtering complete. Ready for next tasks.
+**Last Updated:** 2026-02-13
+**Agent Status:** TOC implementation complete. Ready for About/Resume pages or Graph View.
