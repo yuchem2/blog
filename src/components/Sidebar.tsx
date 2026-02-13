@@ -8,6 +8,22 @@ interface SidebarProps {
   currentProject?: string;
 }
 
+function FilterLink({ href, label, isActive }: { href: string; label: string; isActive: boolean }) {
+  return (
+    <Link
+      href={href}
+      className={clsx(
+        'block text-center px-3 py-2 rounded-lg text-sm transition-all duration-200',
+        isActive
+          ? 'bg-primary text-primary-foreground font-medium shadow-sm hover:bg-primary/90'
+          : 'bg-bg-sub text-text-sub hover:text-text-main hover:bg-bg-sub/80',
+      )}
+    >
+      {label}
+    </Link>
+  );
+}
+
 export async function Sidebar({ currentCategory, currentProject }: SidebarProps) {
   let categories: string[] = [];
   let projects: string[] = [];
@@ -30,9 +46,9 @@ export async function Sidebar({ currentCategory, currentProject }: SidebarProps)
   };
 
   return (
-    <aside className="lg:sticky lg:top-32 space-y-10">
+    <aside className="md:sticky md:top-32 space-y-10">
       {' '}
-      {/* top-28 -> top-32 */}
+      {/* lg:sticky -> md:sticky */}
       <div className="space-y-4">
         <h4 className="font-bold text-lg px-2">Graph View</h4>
         <div className="rounded-2xl p-6 border border-border-main text-center text-sm text-text-sub">Graph visualization coming soon...</div>
@@ -41,28 +57,14 @@ export async function Sidebar({ currentCategory, currentProject }: SidebarProps)
         <div className="space-y-3">
           <h4 className="font-bold text-lg px-2">Categories</h4>
           <div className="grid grid-cols-2 gap-2">
-            <Link
-              href={createQueryString({ project: currentProject })}
-              className={clsx(
-                'block text-center px-3 py-2 rounded-lg text-sm transition-all duration-200',
-                !currentCategory ? 'bg-primary text-primary-foreground font-medium shadow-sm' : 'bg-bg-sub text-text-sub hover:text-text-main',
-              )}
-            >
-              All
-            </Link>
+            <FilterLink href={createQueryString({ project: currentProject })} label="All" isActive={!currentCategory} />
             {categories.map((category) => (
-              <Link
+              <FilterLink
                 key={category}
                 href={createQueryString({ project: currentProject, category })}
-                className={clsx(
-                  'block text-center px-3 py-2 rounded-lg text-sm transition-all duration-200',
-                  currentCategory === category
-                    ? 'bg-primary text-primary-foreground font-medium shadow-sm'
-                    : 'bg-bg-sub text-text-sub hover:text-text-main',
-                )}
-              >
-                {category}
-              </Link>
+                label={category}
+                isActive={currentCategory === category}
+              />
             ))}
           </div>
         </div>
@@ -71,28 +73,14 @@ export async function Sidebar({ currentCategory, currentProject }: SidebarProps)
         <div className="space-y-3">
           <h4 className="font-bold text-lg px-2">Projects</h4>
           <div className="grid grid-cols-2 gap-2">
-            <Link
-              href={createQueryString({ category: currentCategory })}
-              className={clsx(
-                'block text-center px-3 py-2 rounded-lg text-sm transition-all duration-200',
-                !currentProject ? 'bg-primary text-primary-foreground font-medium shadow-sm' : 'bg-bg-sub text-text-sub hover:text-text-main',
-              )}
-            >
-              All
-            </Link>
+            <FilterLink href={createQueryString({ category: currentCategory })} label="All" isActive={!currentProject} />
             {projects.map((project) => (
-              <Link
+              <FilterLink
                 key={project}
                 href={createQueryString({ category: currentCategory, project })}
-                className={clsx(
-                  'block text-center px-3 py-2 rounded-lg text-sm transition-all duration-200',
-                  currentProject === project
-                    ? 'bg-primary text-primary-foreground font-medium shadow-sm'
-                    : 'bg-bg-sub text-text-sub hover:text-text-main',
-                )}
-              >
-                {project}
-              </Link>
+                label={project}
+                isActive={currentProject === project}
+              />
             ))}
           </div>
         </div>
