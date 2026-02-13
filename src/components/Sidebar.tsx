@@ -1,11 +1,13 @@
 import Link from 'next/link';
 import clsx from 'clsx';
-import { getDatabaseProperties } from '@/lib/notion-server';
+import { getDatabaseProperties, BlogPost } from '@/lib/notion-server'; // BlogPost import
 import { NOTION_DATA_SOURCE_ID } from '@/lib/env';
+import { GraphView } from './GraphView';
 
 interface SidebarProps {
   currentCategory?: string;
   currentProject?: string;
+  posts?: BlogPost[]; // posts prop 추가
 }
 
 function FilterLink({ href, label, isActive }: { href: string; label: string; isActive: boolean }) {
@@ -24,7 +26,8 @@ function FilterLink({ href, label, isActive }: { href: string; label: string; is
   );
 }
 
-export async function Sidebar({ currentCategory, currentProject }: SidebarProps) {
+export async function Sidebar({ currentCategory, currentProject, posts = [] }: SidebarProps) {
+  // posts 기본값 설정
   let categories: string[] = [];
   let projects: string[] = [];
 
@@ -47,12 +50,12 @@ export async function Sidebar({ currentCategory, currentProject }: SidebarProps)
 
   return (
     <aside className="md:sticky md:top-32 space-y-10">
-      {' '}
-      {/* lg:sticky -> md:sticky */}
       <div className="space-y-4">
         <h4 className="font-bold text-lg px-2">Graph View</h4>
-        <div className="rounded-2xl p-6 border border-border-main text-center text-sm text-text-sub">Graph visualization coming soon...</div>
+        {/* GraphView에 posts 전달 */}
+        <GraphView posts={posts} />
       </div>
+
       {categories.length > 0 && (
         <div className="space-y-3">
           <h4 className="font-bold text-lg px-2">Categories</h4>
@@ -69,6 +72,7 @@ export async function Sidebar({ currentCategory, currentProject }: SidebarProps)
           </div>
         </div>
       )}
+
       {projects.length > 0 && (
         <div className="space-y-3">
           <h4 className="font-bold text-lg px-2">Projects</h4>

@@ -78,9 +78,12 @@ This document is a development guide for the Gemini CLI agent to reference when 
 - [ ] **Resume Page UI:** Design and implement the Resume page, considering either a PDF embed or a custom-designed layout.
 
 ### 3. Advanced Features
-- [ ] **Graph View (Obsidian Style):**
-  - [ ] Add logic to analyze backlinks between Notion pages.
-  - [ ] Implement a visualization component using `react-force-graph` or D3.js.
+- [x] **Graph View (Obsidian Style):**
+  - [x] Implement a visualization component using `react-force-graph-2d`.
+  - [x] Visualize posts as nodes, colored by category.
+  - [x] Group posts by project using a central project node and invisible category links.
+  - [x] Add interactivity: Click to navigate, Zoom/Pan support.
+  - [x] Optimize performance with `React.memo` and responsive sizing.
 - [ ] **Analytics & SEO:**
   - [ ] Add `<GoogleAnalytics gaId="..." />` to `src/app/layout.tsx`.
   - [ ] Dynamically generate metadata for posts and set up `robots.txt`, `sitemap.xml`.
@@ -95,5 +98,5 @@ This document is a development guide for the Gemini CLI agent to reference when 
 - **Identity:** The Korean name is 윤재현, but use the English name **yunio**. The blog name is **yunio's blog**.
 
 ---
-**Last Updated:** 2026-02-13
-**Agent Status:** Responsive typography implemented. Ready for About/Resume pages or Graph View.
+**Last Updated:** 2026-02-14
+**Agent Status:** Graph View implemented. Ready for About/Resume pages or Analytics.

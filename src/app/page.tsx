@@ -45,11 +45,12 @@ export default async function HomePage({ searchParams }: HomePageProps) {
     <div className="flex flex-col gap-12">
       <div className="flex flex-col-reverse md:flex-row gap-12">
         <div className="w-full md:w-64 flex-shrink-0">
-          <Sidebar currentCategory={category} currentProject={project} />
+          {/* allPosts 전달 */}
+          <Sidebar currentCategory={category} currentProject={project} posts={allPosts} />
         </div>
 
-        <div className="flex-1 min-w-0">
-          <div className="space-y-12">
+        <div className="flex-1 min-w-0 flex flex-col">
+          <div className="space-y-12 flex-grow">
             {currentPosts.length > 0 ? (
               currentPosts.map((post) => (
                 <article key={post.id} className="group cursor-pointer">
@@ -76,11 +77,12 @@ export default async function HomePage({ searchParams }: HomePageProps) {
               </div>
             )}
           </div>
+
+          <div className="mt-12">
+            <Pagination totalPages={totalPages} currentPage={currentPage} />
+          </div>
         </div>
       </div>
-
-      {/* 페이지네이션을 전체 레이아웃 하단으로 이동 */}
-      <Pagination totalPages={totalPages} currentPage={currentPage} />
     </div>
   );
 }
