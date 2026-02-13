@@ -59,6 +59,7 @@ This document is a development guide for the Gemini CLI agent to reference when 
   - [x] Adjust main content width to be responsive (`max-w-3xl` to `5xl`).
   - [x] Refine active navigation link style for better visibility.
   - [x] Soften the light mode background color for better eye comfort.
+  - [x] **Responsive Typography:** Implement fluid typography by adjusting the root `font-size` based on breakpoints (Mobile: 12px, Tablet: 14px, Desktop: 16px).
 - [x] **Main Page / Blog Index UI:**
   - [x] Refine the layout by adding a sidebar for categories/tags.
   - [x] Implement multi-filter support for categories and projects.
@@ -95,4 +96,4 @@ This document is a development guide for the Gemini CLI agent to reference when 
 
 ---
 **Last Updated:** 2026-02-13
-**Agent Status:** TOC implementation complete. Ready for About/Resume pages or Graph View.
+**Agent Status:** Responsive typography implemented. Ready for About/Resume pages or Graph View.
