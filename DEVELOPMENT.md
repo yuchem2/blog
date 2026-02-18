@@ -88,8 +88,12 @@ This document is a development guide for the Gemini CLI agent to reference when 
   - [x] Add `<GoogleAnalytics gaId="..." />` to `src/app/layout.tsx`.
   - [x] Dynamically generate metadata for posts and set up `robots.txt`, `sitemap.xml`.
   - [x] Implement real-time page views using Upstash/Vercel KV.
-- [ ] **Interactive Elements:**
-  - [ ] **Comments:** Add a Giscus (GitHub Discussions) component.
+- [x] **Interactive Elements:**
+  - [x] **Comments:** Implement a custom comment system using Vercel KV (Redis).
+    - [x] Anonymous commenting with password protection for edit/delete.
+    - [x] Secure password storage using `bcryptjs`.
+    - [x] Admin deletion support via `ADMIN_PASSWORD`.
+    - [x] User-friendly UI with inline forms and validation feedback.
 
 ## 📝 User Notes
 - Keep the design as simple as possible.
@@ -99,4 +103,4 @@ This document is a development guide for the Gemini CLI agent to reference when 
 
 ---
 **Last Updated:** 2026-02-18
-**Agent Status:** Real-time page views implemented. Ready for About/Resume pages or Comments.
+**Agent Status:** Comments system implemented. Ready for About/Resume pages.

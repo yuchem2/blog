@@ -6,6 +6,7 @@ import { getAllPosts, getPostById, getPageBlocks } from '@/lib/notion-server';
 import { NotionBlock } from '@/components/NotionBlock';
 import { TableOfContents } from '@/components/TableOfContents';
 import { ViewCounter } from '@/components/ViewCounter';
+import { Comments } from '@/components/Comments'; // Comments import
 import { extractTocFromBlocks } from '@/lib/utils';
 import { NOTION_DATA_SOURCE_ID } from '@/lib/env';
 
@@ -70,7 +71,7 @@ export default async function PostPage({ params }: { params: Promise<{ id: strin
               <span>
                 Updated: <time dateTime={post.updatedAt}>{new Date(post.updatedAt).toLocaleDateString()}</time>
               </span>
-              <ViewCounter slug={post.id} increment={true} /> {/* 조회수 카운터 추가 */}
+              <ViewCounter slug={post.id} increment={true} />
             </div>
             {post.tags.length > 0 && (
               <div className="flex gap-2 mt-2">
@@ -89,6 +90,9 @@ export default async function PostPage({ params }: { params: Promise<{ id: strin
             <NotionBlock key={block.id} block={block} />
           ))}
         </div>
+
+        {/* 댓글 컴포넌트 추가 */}
+        <Comments postId={post.id} />
       </article>
 
       <TableOfContents toc={toc} />

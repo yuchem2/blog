@@ -3,6 +3,7 @@ export const NOTION_DATA_SOURCE_ID = process.env.NOTION_DATA_SOURCE_ID;
 export const NEXT_PUBLIC_GA_ID = process.env.NEXT_PUBLIC_GA_ID;
 export const KV_REST_API_URL = process.env.KV_REST_API_URL;
 export const KV_REST_API_TOKEN = process.env.KV_REST_API_TOKEN;
+export const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD;
 
 if (!NOTION_TOKEN) {
   throw new Error('Missing NOTION_TOKEN environment variable');
