@@ -5,6 +5,7 @@ import type { Metadata } from 'next';
 import { getAllPosts, getPostById, getPageBlocks } from '@/lib/notion-server';
 import { NotionBlock } from '@/components/NotionBlock';
 import { TableOfContents } from '@/components/TableOfContents';
+import { ViewCounter } from '@/components/ViewCounter';
 import { extractTocFromBlocks } from '@/lib/utils';
 import { NOTION_DATA_SOURCE_ID } from '@/lib/env';
 
@@ -62,13 +63,14 @@ export default async function PostPage({ params }: { params: Promise<{ id: strin
           </div>
           <h1 className="text-4xl font-extrabold mb-4 leading-tight">{post.title}</h1>
           <div className="flex flex-col items-center gap-2 text-text-sub text-sm">
-            <div className="flex gap-4">
+            <div className="flex gap-4 items-center">
               <span>
                 Posted: <time dateTime={post.createdAt}>{new Date(post.createdAt).toLocaleDateString()}</time>
               </span>
               <span>
                 Updated: <time dateTime={post.updatedAt}>{new Date(post.updatedAt).toLocaleDateString()}</time>
               </span>
+              <ViewCounter slug={post.id} increment={true} /> {/* 조회수 카운터 추가 */}
             </div>
             {post.tags.length > 0 && (
               <div className="flex gap-2 mt-2">

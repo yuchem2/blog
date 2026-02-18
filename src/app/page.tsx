@@ -4,6 +4,7 @@ import { getAllPosts, BlogPost } from '@/lib/notion-server';
 import { NOTION_DATA_SOURCE_ID } from '@/lib/env';
 import { Sidebar } from '@/components/Sidebar';
 import { Pagination } from '@/components/Pagination';
+import { ViewCounter } from '@/components/ViewCounter';
 
 export const revalidate = 3600;
 
@@ -45,7 +46,6 @@ export default async function HomePage({ searchParams }: HomePageProps) {
     <div className="flex flex-col gap-12">
       <div className="flex flex-col-reverse md:flex-row gap-12">
         <div className="w-full md:w-64 flex-shrink-0">
-          {/* allPosts 전달 */}
           <Sidebar currentCategory={category} currentProject={project} posts={allPosts} />
         </div>
 
@@ -55,7 +55,11 @@ export default async function HomePage({ searchParams }: HomePageProps) {
               currentPosts.map((post) => (
                 <article key={post.id} className="group cursor-pointer">
                   <Link href={`/post/${post.id}`}>
-                    <span className="text-sm text-text-sub tabular-nums">{new Date(post.createdAt).toLocaleDateString()}</span>
+                    <div className="flex items-center gap-2 text-sm text-text-sub tabular-nums mb-1">
+                      <span>{new Date(post.createdAt).toLocaleDateString()}</span>
+                      <span>•</span>
+                      <ViewCounter slug={post.id} increment={false} /> {/* 조회수 표시 */}
+                    </div>
                     <h3 className="text-2xl font-bold mt-1 group-hover:text-primary transition-colors flex items-center">
                       {post.title}
                       <ArrowRight className="ml-2 w-5 h-5 opacity-0 -translate-x-2 group-hover:opacity-100 group-hover:translate-x-0 transition-all" />

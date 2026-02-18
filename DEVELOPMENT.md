@@ -87,7 +87,7 @@ This document is a development guide for the Gemini CLI agent to reference when 
 - [x] **Analytics & SEO:**
   - [x] Add `<GoogleAnalytics gaId="..." />` to `src/app/layout.tsx`.
   - [x] Dynamically generate metadata for posts and set up `robots.txt`, `sitemap.xml`.
-  - [ ] Implement real-time page views using Upstash/Vercel KV.
+  - [x] Implement real-time page views using Upstash/Vercel KV.
 - [ ] **Interactive Elements:**
   - [ ] **Comments:** Add a Giscus (GitHub Discussions) component.
 
@@ -98,5 +98,5 @@ This document is a development guide for the Gemini CLI agent to reference when 
 - **Identity:** The Korean name is 윤재현, but use the English name **yunio**. The blog name is **yunio's blog**.
 
 ---
-**Last Updated:** 2026-02-14
-**Agent Status:** Analytics & SEO setup complete. Ready for About/Resume pages or Comments.
+**Last Updated:** 2026-02-18
+**Agent Status:** Real-time page views implemented. Ready for About/Resume pages or Comments.
