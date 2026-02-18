@@ -1,11 +1,13 @@
 import type { Metadata } from 'next';
 import type { ReactNode } from 'react';
 import localFont from 'next/font/local';
+import { GoogleAnalytics } from '@next/third-parties/google';
 
 import { Providers } from '@/components/providers';
 import { Header } from '@/components/Header';
 import { Footer } from '@/components/Footer';
 import { ScrollToTop } from '@/components/ScrollToTop';
+import { NEXT_PUBLIC_GA_ID } from '@/lib/env';
 import './globals.css';
 
 const pretendard = localFont({
@@ -16,11 +18,25 @@ const pretendard = localFont({
 });
 
 export const metadata: Metadata = {
+  metadataBase: new URL('https://yunio.dev'), // 실제 도메인으로 변경 필요
   title: {
     template: '%s | yunio.dev',
     default: "yunio's blog",
   },
-  description: 'Built with Next.js and Notion API',
+  description: 'A blog about development, life, and thoughts.',
+  openGraph: {
+    title: "yunio's blog",
+    description: 'A blog about development, life, and thoughts.',
+    url: 'https://yunio.dev',
+    siteName: "yunio's blog",
+    locale: 'ko_KR',
+    type: 'website',
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: "yunio's blog",
+    description: 'A blog about development, life, and thoughts.',
+  },
   icons: {
     icon: [
       { url: '/favicon.ico' },
@@ -63,9 +79,10 @@ export default function RootLayout({
           <div className="sticky top-0 z-50 bg-bg-main">
             <Header />
           </div>
-          <main className="w-full max-w-4xl lg:max-w-5xl xl:max-w-6xl mx-auto px-6 pt-8 pb-16 flex-grow">{children}</main> {/* pt-4 -> pt-8 */}
+          <main className="w-full max-w-4xl lg:max-w-5xl xl:max-w-6xl mx-auto px-6 pt-8 pb-16 flex-grow">{children}</main>
           <Footer />
         </Providers>
+        {NEXT_PUBLIC_GA_ID && <GoogleAnalytics gaId={NEXT_PUBLIC_GA_ID} />}
       </body>
     </html>
   );

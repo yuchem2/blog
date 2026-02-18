@@ -1,5 +1,6 @@
 export const NOTION_TOKEN = process.env.NOTION_TOKEN;
 export const NOTION_DATA_SOURCE_ID = process.env.NOTION_DATA_SOURCE_ID;
+export const NEXT_PUBLIC_GA_ID = process.env.NEXT_PUBLIC_GA_ID;
 
 if (!NOTION_TOKEN) {
   throw new Error('Missing NOTION_TOKEN environment variable');

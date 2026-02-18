@@ -84,9 +84,9 @@ This document is a development guide for the Gemini CLI agent to reference when 
   - [x] Group posts by project using a central project node and invisible category links.
   - [x] Add interactivity: Click to navigate, Zoom/Pan support.
   - [x] Optimize performance with `React.memo` and responsive sizing.
-- [ ] **Analytics & SEO:**
-  - [ ] Add `<GoogleAnalytics gaId="..." />` to `src/app/layout.tsx`.
-  - [ ] Dynamically generate metadata for posts and set up `robots.txt`, `sitemap.xml`.
+- [x] **Analytics & SEO:**
+  - [x] Add `<GoogleAnalytics gaId="..." />` to `src/app/layout.tsx`.
+  - [x] Dynamically generate metadata for posts and set up `robots.txt`, `sitemap.xml`.
   - [ ] Implement real-time page views using Upstash/Vercel KV.
 - [ ] **Interactive Elements:**
   - [ ] **Comments:** Add a Giscus (GitHub Discussions) component.
@@ -99,4 +99,4 @@ This document is a development guide for the Gemini CLI agent to reference when 
 
 ---
 **Last Updated:** 2026-02-14
-**Agent Status:** Graph View implemented. Ready for About/Resume pages or Analytics.
+**Agent Status:** Analytics & SEO setup complete. Ready for About/Resume pages or Comments.
