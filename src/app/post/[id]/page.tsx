@@ -3,11 +3,11 @@ import { notFound } from 'next/navigation';
 import type { Metadata } from 'next';
 
 import { getAllPosts, getPostById, getPageBlocks } from '@/lib/notion-server';
-import { NotionBlock } from '@/components/features/post/NotionBlock';
+import { NotionBlockRenderer } from '@/components/features/post/NotionBlockRenderer'; // NotionBlockRenderer import
 import { TableOfContents } from '@/components/features/post/TableOfContents';
 import { ViewCounter } from '@/components/features/post/ViewCounter';
 import { Comments } from '@/components/features/post/Comments';
-import { extractTocFromBlocks, formatDate } from '@/lib/utils'; // formatDate import
+import { extractTocFromBlocks, formatDate } from '@/lib/utils';
 import { NOTION_DATA_SOURCE_ID } from '@/lib/env';
 
 export const revalidate = 3600;
@@ -67,12 +67,10 @@ export default async function PostPage({ params }: { params: Promise<{ id: strin
             <div className="flex gap-4 items-center">
               <span>
                 Posted: <time dateTime={post.createdAt}>{formatDate(post.createdAt)}</time>
-              </span>{' '}
-              {/* formatDate 사용 */}
+              </span>
               <span>
                 Updated: <time dateTime={post.updatedAt}>{formatDate(post.updatedAt)}</time>
-              </span>{' '}
-              {/* formatDate 사용 */}
+              </span>
               <ViewCounter slug={post.id} increment={true} />
             </div>
             {post.tags.length > 0 && (
@@ -88,9 +86,8 @@ export default async function PostPage({ params }: { params: Promise<{ id: strin
         </header>
 
         <div className="prose dark:prose-invert max-w-none">
-          {blocks.map((block) => (
-            <NotionBlock key={block.id} block={block} />
-          ))}
+          {/* NotionBlockRenderer 사용 */}
+          <NotionBlockRenderer blocks={blocks} />
         </div>
 
         <Comments postId={post.id} />

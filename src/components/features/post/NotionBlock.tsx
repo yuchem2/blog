@@ -1,9 +1,10 @@
 import { ReactNode } from 'react';
-import { BlockObjectResponse, RichTextItemResponse } from '@notionhq/client/build/src/api-endpoints';
+import { RichTextItemResponse } from '@notionhq/client/build/src/api-endpoints';
+import { BlockWithChildren } from '@/lib/notion-server';
 
 import { CodeBlock } from './CodeBlock';
+import { NotionBlockRenderer } from './NotionBlockRenderer';
 
-// RichText 렌더링 헬퍼 컴포넌트
 function RichText({ text }: { text: RichTextItemResponse[] }) {
   if (!text) return null;
 
@@ -15,7 +16,12 @@ function RichText({ text }: { text: RichTextItemResponse[] }) {
 
         if (annotations.bold) content = <strong key={i}>{content}</strong>;
         if (annotations.italic) content = <em key={i}>{content}</em>;
-        if (annotations.strikethrough) content = <s key={i}>{content}</s>;
+        if (annotations.strikethrough)
+          content = (
+            <span key={i} className="line-through">
+              {content}
+            </span>
+          );
         if (annotations.underline) content = <u key={i}>{content}</u>;
         if (annotations.code)
           content = (
@@ -38,7 +44,7 @@ function RichText({ text }: { text: RichTextItemResponse[] }) {
   );
 }
 
-export function NotionBlock({ block }: { block: BlockObjectResponse }) {
+export function NotionBlock({ block, level = 0 }: { block: BlockWithChildren; level?: number }) {
   switch (block.type) {
     case 'paragraph':
       return (
@@ -72,19 +78,21 @@ export function NotionBlock({ block }: { block: BlockObjectResponse }) {
       );
     case 'bulleted_list_item':
       return (
-        <li className="ml-4 list-disc mb-1 text-text-main">
+        <li className="mb-1 text-text-main">
           <RichText text={block.bulleted_list_item.rich_text} />
+          {block.children && block.children.length > 0 && <NotionBlockRenderer blocks={block.children} level={level + 1} />}
         </li>
       );
     case 'numbered_list_item':
       return (
-        <li className="ml-4 list-decimal mb-1 text-text-main">
+        <li className="mb-1 text-text-main">
           <RichText text={block.numbered_list_item.rich_text} />
+          {block.children && block.children.length > 0 && <NotionBlockRenderer blocks={block.children} level={level + 1} />}
         </li>
       );
     case 'quote':
       return (
-        <blockquote className="border-l-4 border-primary pl-4 py-1 my-4 bg-bg-sub italic text-text-main">
+        <blockquote className="border-l-4 border-primary pl-4 pr-4 py-1 my-4 bg-bg-sub italic text-text-main">
           <RichText text={block.quote.rich_text} />
         </blockquote>
       );
@@ -103,7 +111,39 @@ export function NotionBlock({ block }: { block: BlockObjectResponse }) {
         </figure>
       );
     case 'divider':
-      return <hr className="my-8 border-border-main" />;
+      return <hr className="my-8 border-t border-border-main" />;
+    case 'table':
+      return (
+        <div className="my-8 overflow-x-auto">
+          <table className="min-w-full border-collapse border border-border-main">
+            <tbody>
+              {block.children?.map((child) => (
+                <NotionBlock key={child.id} block={child} level={level} />
+              ))}
+            </tbody>
+          </table>
+        </div>
+      );
+    case 'table_row':
+      return (
+        <tr className="border-b border-border-main last:border-none">
+          {block.table_row.cells.map((cell, i) => (
+            <td key={i} className="p-2 border-r border-border-main last:border-none text-sm text-text-main">
+              <RichText text={cell} />
+            </td>
+          ))}
+        </tr>
+      );
+    case 'column_list':
+      return (
+        <div className="flex flex-col md:flex-row gap-4 my-4 w-full">
+          {block.children?.map((child) => (
+            <NotionBlock key={child.id} block={child} level={level} />
+          ))}
+        </div>
+      );
+    case 'column':
+      return <div className="flex-1 min-w-0">{block.children && <NotionBlockRenderer blocks={block.children} level={level} />}</div>;
     default:
       console.warn(`Unsupported block type: ${block.type}`);
       return null;

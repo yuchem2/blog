@@ -16,6 +16,11 @@ export interface BlogPost {
   description: string;
 }
 
+// BlockObjectResponse 확장 (children 속성 추가)
+export type BlockWithChildren = BlockObjectResponse & {
+  children?: BlockWithChildren[];
+};
+
 // API 호출 사이에 지연을 주기 위한 헬퍼 함수
 const sleep = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
 
@@ -124,8 +129,8 @@ export async function getPostById(pageId: string): Promise<BlogPost | undefined>
   }
 }
 
-export async function getPageBlocks(blockId: string): Promise<BlockObjectResponse[]> {
-  let blocks: BlockObjectResponse[] = [];
+export async function getPageBlocks(blockId: string): Promise<BlockWithChildren[]> {
+  let blocks: BlockWithChildren[] = [];
   let cursor: string | undefined;
 
   while (true) {
@@ -135,6 +140,15 @@ export async function getPageBlocks(blockId: string): Promise<BlockObjectRespons
     });
 
     const fullBlocks = results.filter((block): block is BlockObjectResponse => 'type' in block);
+
+    // 하위 블록이 있는 경우 재귀적으로 가져오기
+    for (const block of fullBlocks) {
+      if (block.has_children) {
+        const children = await getPageBlocks(block.id);
+        (block as BlockWithChildren).children = children;
+      }
+    }
+
     blocks = [...blocks, ...fullBlocks];
 
     if (!has_more) {

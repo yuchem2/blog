@@ -79,6 +79,11 @@ This document is a development guide for the Gemini CLI agent to reference when 
     - [x] Auto-highlight active headings based on scroll position.
     - [x] Support smooth scrolling and two-way synchronization (TOC <-> Content).
     - [x] Ensure consistent behavior on both desktop and mobile.
+  - [x] **Block Rendering Improvements:**
+    - [x] Recursive rendering for nested lists (`ul`, `ol`) with depth-based styling.
+    - [x] Enhanced `CodeBlock` with language label and copy button.
+    - [x] Support for `table`, `column_list`, `quote` (with styling), and `divider`.
+    - [x] Improved light mode visibility (colors, borders).
 - [ ] **About Page UI:** Design and implement the content and layout for the About page.
 - [ ] **Resume Page UI:** Design and implement the Resume page, considering either a PDF embed or a custom-designed layout.
 
@@ -108,4 +113,4 @@ This document is a development guide for the Gemini CLI agent to reference when 
 
 ---
 **Last Updated:** 2026-02-19
-**Agent Status:** Mobile header implemented. Ready for About/Resume pages.
+**Agent Status:** Post rendering improved. Ready for About/Resume pages.
