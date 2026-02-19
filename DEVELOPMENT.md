@@ -62,6 +62,9 @@ This document is a development guide for the Gemini CLI agent to reference when 
   - [x] Refine active navigation link style for better visibility.
   - [x] Soften the light mode background color for better eye comfort.
   - [x] **Responsive Typography:** Implement fluid typography by adjusting the root `font-size` based on breakpoints (Mobile: 12px, Tablet: 14px, Desktop: 16px).
+  - [x] **Mobile Header:** Implement a responsive hamburger menu for mobile devices (< 768px).
+    - [x] Full-screen dropdown menu with larger touch targets.
+    - [x] Consistent styling for navigation links and theme toggle.
 - [x] **Main Page / Blog Index UI:**
   - [x] Refine the layout by adding a sidebar for categories/tags.
   - [x] Implement multi-filter support for categories and projects.
@@ -104,5 +107,5 @@ This document is a development guide for the Gemini CLI agent to reference when 
 - **Identity:** The Korean name is 윤재현, but use the English name **yunio**. The blog name is **yunio's blog**.
 
 ---
-**Last Updated:** 2026-02-18
-**Agent Status:** Component refactoring complete. Ready for About/Resume pages.
+**Last Updated:** 2026-02-19
+**Agent Status:** Mobile header implemented. Ready for About/Resume pages.

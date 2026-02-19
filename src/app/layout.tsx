@@ -79,7 +79,7 @@ export default function RootLayout({
           <div className="sticky top-0 z-50 bg-bg-main">
             <Header />
           </div>
-          <main className="w-full max-w-4xl lg:max-w-5xl xl:max-w-6xl mx-auto px-6 pt-8 pb-16 flex-grow">{children}</main>
+          <main className="w-full max-w-3xl lg:max-w-4xl xl:max-w-5xl mx-auto px-8 pt-8 pb-16 flex-grow">{children}</main> {/* px-6 -> px-8 */}
           <Footer />
         </Providers>
         {NEXT_PUBLIC_GA_ID && <GoogleAnalytics gaId={NEXT_PUBLIC_GA_ID} />}
