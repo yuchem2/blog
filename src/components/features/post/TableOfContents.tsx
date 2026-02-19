@@ -10,10 +10,29 @@ interface TableOfContentsProps {
 }
 
 export function TableOfContents({ toc }: TableOfContentsProps) {
-  const [isOpen, setIsOpen] = useState(true);
+  const [isOpen, setIsOpen] = useState(false); // 초기값 false로 변경
   const [activeId, setActiveId] = useState<string>('');
   const isClickedRef = useRef(false);
   const scrollTimeoutRef = useRef<NodeJS.Timeout | null>(null);
+
+  // 화면 크기에 따라 초기 상태 설정
+  useEffect(() => {
+    const handleResize = () => {
+      if (window.innerWidth >= 1280) {
+        // xl breakpoint
+        setIsOpen(true);
+      } else {
+        setIsOpen(false);
+      }
+    };
+
+    // 초기 실행
+    handleResize();
+
+    // 리사이즈 이벤트 리스너 (선택 사항, 화면 크기 변경 시 반응하게 하려면 추가)
+    // window.addEventListener('resize', handleResize);
+    // return () => window.removeEventListener('resize', handleResize);
+  }, []);
 
   const findActiveHeading = useCallback(() => {
     if (isClickedRef.current) return;
@@ -59,7 +78,6 @@ export function TableOfContents({ toc }: TableOfContentsProps) {
 
     window.addEventListener('scroll', handleScroll, { passive: true });
 
-    // 초기 실행을 비동기로 처리하여 set-state-in-effect 경고 해결
     requestAnimationFrame(() => {
       findActiveHeading();
     });
@@ -72,7 +90,6 @@ export function TableOfContents({ toc }: TableOfContentsProps) {
     };
   }, [findActiveHeading]);
 
-  // URL 해시 변경 감지 (본문 헤더 클릭 시)
   useEffect(() => {
     const handleHashChange = () => {
       const hash = window.location.hash.slice(1);
@@ -88,7 +105,6 @@ export function TableOfContents({ toc }: TableOfContentsProps) {
 
     window.addEventListener('hashchange', handleHashChange);
 
-    // 초기 로드 시 해시가 있으면 반영 (비동기 처리)
     requestAnimationFrame(() => {
       handleHashChange();
     });

@@ -16,10 +16,6 @@ export function extractTocFromBlocks(blocks: BlockObjectResponse[]): TocItem[] {
   const toc: TocItem[] = [];
 
   blocks.forEach((block) => {
-    // h1은 제목으로 간주하여 TOC에서 제외할 수도 있지만,
-    // 만약 본문 내에 h1을 쓴다면 level 1로 처리합니다.
-    // 사용자의 요청에 따라 h2부터 시작하는 구조로 변경합니다.
-
     if (block.type === 'heading_1') {
       toc.push({
         id: block.id,
@@ -30,16 +26,31 @@ export function extractTocFromBlocks(blocks: BlockObjectResponse[]): TocItem[] {
       toc.push({
         id: block.id,
         text: block.heading_2.rich_text[0]?.plain_text || '',
-        level: 1, // h2를 level 1로 변경
+        level: 1,
       });
     } else if (block.type === 'heading_3') {
       toc.push({
         id: block.id,
         text: block.heading_3.rich_text[0]?.plain_text || '',
-        level: 2, // h3를 level 2로 변경
+        level: 2,
       });
     }
   });
 
   return toc;
+}
+
+export function formatDate(dateString: string | number, includeTime = false): string {
+  const date = new Date(dateString);
+  const year = date.getFullYear();
+  const month = String(date.getMonth() + 1).padStart(2, '0');
+  const day = String(date.getDate()).padStart(2, '0');
+
+  if (includeTime) {
+    const hours = String(date.getHours()).padStart(2, '0');
+    const minutes = String(date.getMinutes()).padStart(2, '0');
+    return `${year}-${month}-${day} ${hours}:${minutes}`;
+  }
+
+  return `${year}-${month}-${day}`;
 }

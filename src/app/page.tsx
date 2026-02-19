@@ -2,9 +2,10 @@ import Link from 'next/link';
 import { ArrowRight } from 'lucide-react';
 import { getAllPosts, BlogPost } from '@/lib/notion-server';
 import { NOTION_DATA_SOURCE_ID } from '@/lib/env';
-import { Sidebar } from '@/components/features/blog/Sidebar'; // 경로 수정
-import { Pagination } from '@/components/features/blog/Pagination'; // 경로 수정
-import { ViewCounter } from '@/components/features/post/ViewCounter'; // 경로 수정
+import { Sidebar } from '@/components/features/blog/Sidebar';
+import { Pagination } from '@/components/features/blog/Pagination';
+import { ViewCounter } from '@/components/features/post/ViewCounter';
+import { formatDate } from '@/lib/utils'; // formatDate import
 
 export const revalidate = 3600;
 
@@ -56,7 +57,7 @@ export default async function HomePage({ searchParams }: HomePageProps) {
                 <article key={post.id} className="group cursor-pointer">
                   <Link href={`/post/${post.id}`}>
                     <div className="flex items-center gap-2 text-sm text-text-sub tabular-nums mb-1">
-                      <span>{new Date(post.createdAt).toLocaleDateString()}</span>
+                      <span>{formatDate(post.createdAt)}</span> {/* formatDate 사용 */}
                       <span>•</span>
                       <ViewCounter slug={post.id} increment={false} />
                     </div>

@@ -3,11 +3,11 @@ import { notFound } from 'next/navigation';
 import type { Metadata } from 'next';
 
 import { getAllPosts, getPostById, getPageBlocks } from '@/lib/notion-server';
-import { NotionBlock } from '@/components/features/post/NotionBlock'; // 경로 수정
-import { TableOfContents } from '@/components/features/post/TableOfContents'; // 경로 수정
-import { ViewCounter } from '@/components/features/post/ViewCounter'; // 경로 수정
-import { Comments } from '@/components/features/post/Comments'; // 경로 수정
-import { extractTocFromBlocks } from '@/lib/utils';
+import { NotionBlock } from '@/components/features/post/NotionBlock';
+import { TableOfContents } from '@/components/features/post/TableOfContents';
+import { ViewCounter } from '@/components/features/post/ViewCounter';
+import { Comments } from '@/components/features/post/Comments';
+import { extractTocFromBlocks, formatDate } from '@/lib/utils'; // formatDate import
 import { NOTION_DATA_SOURCE_ID } from '@/lib/env';
 
 export const revalidate = 3600;
@@ -66,11 +66,13 @@ export default async function PostPage({ params }: { params: Promise<{ id: strin
           <div className="flex flex-col items-center gap-2 text-text-sub text-sm">
             <div className="flex gap-4 items-center">
               <span>
-                Posted: <time dateTime={post.createdAt}>{new Date(post.createdAt).toLocaleDateString()}</time>
-              </span>
+                Posted: <time dateTime={post.createdAt}>{formatDate(post.createdAt)}</time>
+              </span>{' '}
+              {/* formatDate 사용 */}
               <span>
-                Updated: <time dateTime={post.updatedAt}>{new Date(post.updatedAt).toLocaleDateString()}</time>
-              </span>
+                Updated: <time dateTime={post.updatedAt}>{formatDate(post.updatedAt)}</time>
+              </span>{' '}
+              {/* formatDate 사용 */}
               <ViewCounter slug={post.id} increment={true} />
             </div>
             {post.tags.length > 0 && (
