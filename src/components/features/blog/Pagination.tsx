@@ -5,7 +5,7 @@ import { useSearchParams } from 'next/navigation';
 import { ArrowLeft, ArrowRight } from 'lucide-react';
 import clsx from 'clsx';
 
-import { Button } from '../../ui/Button'; // 경로 수정
+import { Button } from '../../ui/Button';
 
 interface PaginationProps {
   totalPages: number;

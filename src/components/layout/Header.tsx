@@ -1,7 +1,7 @@
 import Link from 'next/link';
 import Image from 'next/image';
 
-import { ThemeToggle } from '../ui/ThemeToggle'; // 경로 수정
+import { ThemeToggle } from '../ui/ThemeToggle';
 import { Navigation } from './Navigation';
 
 export function Header() {

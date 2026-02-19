@@ -138,7 +138,6 @@ function GraphViewComponent({ height = 200, posts = [] }: GraphViewProps) {
       <div className="rounded-xl overflow-hidden border border-border-main bg-bg-sub relative max-w-full" style={{ width: GRAPH_WIDTH, height }}>
         <div className="absolute left-1/2 top-0 -translate-x-1/2">
           <ForceGraph2D
-            // @ts-expect-error: react-force-graph-2d 타입 정의 문제로 인한 임시 조치
             ref={fgRef}
             width={GRAPH_WIDTH}
             height={height}
