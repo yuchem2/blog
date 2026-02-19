@@ -1,7 +1,7 @@
 import { ReactNode } from 'react';
 import { BlockObjectResponse, RichTextItemResponse } from '@notionhq/client/build/src/api-endpoints';
 
-import { CodeBlock } from './CodeBlock';
+import { CodeBlock } from './CodeBlock'; // 경로 수정
 
 // RichText 렌더링 헬퍼 컴포넌트
 function RichText({ text }: { text: RichTextItemResponse[] }) {

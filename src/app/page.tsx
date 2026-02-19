@@ -2,9 +2,9 @@ import Link from 'next/link';
 import { ArrowRight } from 'lucide-react';
 import { getAllPosts, BlogPost } from '@/lib/notion-server';
 import { NOTION_DATA_SOURCE_ID } from '@/lib/env';
-import { Sidebar } from '@/components/Sidebar';
-import { Pagination } from '@/components/Pagination';
-import { ViewCounter } from '@/components/ViewCounter';
+import { Sidebar } from '@/components/features/blog/Sidebar'; // 경로 수정
+import { Pagination } from '@/components/features/blog/Pagination'; // 경로 수정
+import { ViewCounter } from '@/components/features/post/ViewCounter'; // 경로 수정
 
 export const revalidate = 3600;
 
@@ -58,7 +58,7 @@ export default async function HomePage({ searchParams }: HomePageProps) {
                     <div className="flex items-center gap-2 text-sm text-text-sub tabular-nums mb-1">
                       <span>{new Date(post.createdAt).toLocaleDateString()}</span>
                       <span>•</span>
-                      <ViewCounter slug={post.id} increment={false} /> {/* 조회수 표시 */}
+                      <ViewCounter slug={post.id} increment={false} />
                     </div>
                     <h3 className="text-2xl font-bold mt-1 group-hover:text-primary transition-colors flex items-center">
                       {post.title}

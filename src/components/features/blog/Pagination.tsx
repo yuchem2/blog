@@ -5,7 +5,7 @@ import { useSearchParams } from 'next/navigation';
 import { ArrowLeft, ArrowRight } from 'lucide-react';
 import clsx from 'clsx';
 
-import { Button } from './Button';
+import { Button } from '../../ui/Button'; // 경로 수정
 
 interface PaginationProps {
   totalPages: number;
@@ -17,7 +17,6 @@ export function Pagination({ totalPages, currentPage }: PaginationProps) {
 
   const createPageURL = (pageNumber: number | string) => {
     const params = new URLSearchParams(searchParams);
-    // 페이지 번호가 1보다 작으면 1로, totalPages보다 크면 totalPages로 제한
     const targetPage = Math.max(1, Math.min(Number(pageNumber), totalPages));
     params.set('page', targetPage.toString());
     return `/?${params.toString()}`;
@@ -29,13 +28,7 @@ export function Pagination({ totalPages, currentPage }: PaginationProps) {
 
   return (
     <div className="flex justify-center items-center gap-4 mt-12">
-      <Button
-        variant="ghost"
-        size="icon"
-        disabled={currentPage <= 1}
-        asChild
-        className={clsx(currentPage <= 1 && 'pointer-events-none opacity-50')} // 클릭 방지 및 스타일 처리
-      >
+      <Button variant="ghost" size="icon" disabled={currentPage <= 1} asChild className={clsx(currentPage <= 1 && 'pointer-events-none opacity-50')}>
         <Link href={currentPage <= 1 ? '#' : createPageURL(currentPage - 1)} aria-disabled={currentPage <= 1}>
           <ArrowLeft className="w-4 h-4" />
         </Link>
@@ -54,7 +47,7 @@ export function Pagination({ totalPages, currentPage }: PaginationProps) {
         size="icon"
         disabled={currentPage >= totalPages}
         asChild
-        className={clsx(currentPage >= totalPages && 'pointer-events-none opacity-50')} // 클릭 방지 및 스타일 처리
+        className={clsx(currentPage >= totalPages && 'pointer-events-none opacity-50')}
       >
         <Link href={currentPage >= totalPages ? '#' : createPageURL(currentPage + 1)} aria-disabled={currentPage >= totalPages}>
           <ArrowRight className="w-4 h-4" />

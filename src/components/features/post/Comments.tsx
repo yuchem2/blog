@@ -1,7 +1,7 @@
 'use client';
 
-import { useState, useEffect, type FormEvent, useCallback, type ChangeEvent } from 'react';
-import { Button } from './Button';
+import { useState, useEffect, useCallback, type ChangeEvent, type FormEvent } from 'react';
+import { Button } from '../../ui/Button'; // 경로 수정
 import clsx from 'clsx';
 
 interface Comment {

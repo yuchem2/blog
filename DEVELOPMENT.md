@@ -29,6 +29,8 @@ This document is a development guide for the Gemini CLI agent to reference when 
   - [x] Configure ESLint to work with Prettier.
   - [x] Resolve initial linting errors.
   - [x] Establish and apply a consistent import order rule.
+- [x] **Refactoring:**
+  - [x] Reorganize `src/components` into `ui`, `layout`, and `features` directories for better maintainability.
 
 ## 🎨 Design System
 - **Font:** `Pretendard` (Variable)
@@ -103,4 +105,4 @@ This document is a development guide for the Gemini CLI agent to reference when 
 
 ---
 **Last Updated:** 2026-02-18
-**Agent Status:** Comments system implemented. Ready for About/Resume pages.
+**Agent Status:** Component refactoring complete. Ready for About/Resume pages.

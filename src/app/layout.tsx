@@ -3,10 +3,10 @@ import type { ReactNode } from 'react';
 import localFont from 'next/font/local';
 import { GoogleAnalytics } from '@next/third-parties/google';
 
-import { Providers } from '@/components/providers';
-import { Header } from '@/components/Header';
-import { Footer } from '@/components/Footer';
-import { ScrollToTop } from '@/components/ScrollToTop';
+import { Providers } from '@/components/layout/Providers';
+import { Header } from '@/components/layout/Header';
+import { Footer } from '@/components/layout/Footer';
+import { ScrollToTop } from '@/components/layout/ScrollToTop';
 import { NEXT_PUBLIC_GA_ID } from '@/lib/env';
 import './globals.css';
 
@@ -18,7 +18,7 @@ const pretendard = localFont({
 });
 
 export const metadata: Metadata = {
-  metadataBase: new URL('https://yunio.dev'), // 실제 도메인으로 변경 필요
+  metadataBase: new URL('https://yunio.dev'),
   title: {
     template: '%s | yunio.dev',
     default: "yunio's blog",

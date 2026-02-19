@@ -1,13 +1,13 @@
 import Link from 'next/link';
 import clsx from 'clsx';
-import { getDatabaseProperties, BlogPost } from '@/lib/notion-server'; // BlogPost import
+import { getDatabaseProperties, BlogPost } from '@/lib/notion-server';
 import { NOTION_DATA_SOURCE_ID } from '@/lib/env';
-import { GraphView } from './GraphView';
+import { GraphView } from './GraphView'; // 같은 폴더로 이동 예정
 
 interface SidebarProps {
   currentCategory?: string;
   currentProject?: string;
-  posts?: BlogPost[]; // posts prop 추가
+  posts?: BlogPost[];
 }
 
 function FilterLink({ href, label, isActive }: { href: string; label: string; isActive: boolean }) {
@@ -27,7 +27,6 @@ function FilterLink({ href, label, isActive }: { href: string; label: string; is
 }
 
 export async function Sidebar({ currentCategory, currentProject, posts = [] }: SidebarProps) {
-  // posts 기본값 설정
   let categories: string[] = [];
   let projects: string[] = [];
 
@@ -52,7 +51,6 @@ export async function Sidebar({ currentCategory, currentProject, posts = [] }: S
     <aside className="md:sticky md:top-32 space-y-10">
       <div className="space-y-4">
         <h4 className="font-bold text-lg px-2">Graph View</h4>
-        {/* GraphView에 posts 전달 */}
         <GraphView posts={posts} />
       </div>
 

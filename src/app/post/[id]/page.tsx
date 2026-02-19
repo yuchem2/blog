@@ -3,10 +3,10 @@ import { notFound } from 'next/navigation';
 import type { Metadata } from 'next';
 
 import { getAllPosts, getPostById, getPageBlocks } from '@/lib/notion-server';
-import { NotionBlock } from '@/components/NotionBlock';
-import { TableOfContents } from '@/components/TableOfContents';
-import { ViewCounter } from '@/components/ViewCounter';
-import { Comments } from '@/components/Comments'; // Comments import
+import { NotionBlock } from '@/components/features/post/NotionBlock'; // 경로 수정
+import { TableOfContents } from '@/components/features/post/TableOfContents'; // 경로 수정
+import { ViewCounter } from '@/components/features/post/ViewCounter'; // 경로 수정
+import { Comments } from '@/components/features/post/Comments'; // 경로 수정
 import { extractTocFromBlocks } from '@/lib/utils';
 import { NOTION_DATA_SOURCE_ID } from '@/lib/env';
 
@@ -91,7 +91,6 @@ export default async function PostPage({ params }: { params: Promise<{ id: strin
           ))}
         </div>
 
-        {/* 댓글 컴포넌트 추가 */}
         <Comments postId={post.id} />
       </article>
 

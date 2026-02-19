@@ -6,7 +6,7 @@ import { Sun, Moon } from 'lucide-react';
 import { Button } from './Button';
 
 export function ThemeToggle() {
-  const { setTheme, resolvedTheme } = useTheme(); // 'theme' 변수 제거
+  const { setTheme, resolvedTheme } = useTheme();
 
   return (
     <Button variant="ghost" size="icon" onClick={() => setTheme(resolvedTheme === 'dark' ? 'light' : 'dark')} aria-label="Toggle theme">
