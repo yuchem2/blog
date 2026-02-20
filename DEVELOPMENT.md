@@ -22,7 +22,9 @@ This document is a development guide for the Gemini CLI agent to reference when 
   - [x] Design the header with the logo, navigation (`Blog`, `About`, `Resume`), and theme toggle.
   - [x] Add active link styling to the navigation.
   - [x] Refactor `Header` into a Server Component, extracting `Navigation` as a Client Component.
-- [x] **Favicon:** Apply new favicon set via `metadata`.
+- [x] **Favicon & Metadata:**
+  - [x] Apply new favicon set via `metadata`.
+  - [x] Update `manifest.json` and `browserconfig.xml` with correct icons and theme colors.
 - [x] **404 Page:** Create a custom 404 page consistent with the site's theme.
 - [x] **Linting & Formatting:**
   - [x] Set up Prettier with custom formatting rules.
@@ -36,12 +38,12 @@ This document is a development guide for the Gemini CLI agent to reference when 
 ## 🎨 Design System
 - **Font:** `Pretendard` (Variable)
 - **Colors:**
-  - **Primary:** `#B79CFF`
+  - **Primary (Light/Dark):** `#8B5CF6` / `#B79CFF`
   - **Secondary:** `#F3B9FF`
-  - **Background (Light/Dark):** `#fafafa` / `#1B1B1B`
-  - **Sub Background (Light/Dark):** `#f3f4f6` / `#2D2D2D`
+  - **Background (Light/Dark):** `#f5f5f5` / `#1B1B1B`
+  - **Sub Background (Light/Dark):** `#e5e7eb` / `#2D2D2D`
   - **Text (Light/Dark):** `#1B1B1B` / `#E0E0E0`
-  - **Border (Light/Dark):** `#e5e7eb` / `#333333`
+  - **Border (Light/Dark):** `#d1d5db` / `#333333`
 
 ## 🛠️ Feature Roadmap (To-be Implemented)
 
@@ -118,4 +120,4 @@ This document is a development guide for the Gemini CLI agent to reference when 
 
 ---
 **Last Updated:** 2026-02-20
-**Agent Status:** Redis migration complete. Ready for About/Resume pages.
+**Agent Status:** Metadata updated. Ready for About/Resume pages.

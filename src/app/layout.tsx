@@ -55,12 +55,19 @@ export const metadata: Metadata = {
       { url: '/apple-icon-144x144.png', sizes: '144x144' },
       { url: '/apple-icon-152x152.png', sizes: '152x152' },
       { url: '/apple-icon-180x180.png', sizes: '180x180' },
+      { url: '/apple-icon-precomposed.png', rel: 'apple-touch-icon-precomposed' },
     ],
     other: [
-      {
-        rel: 'android-icon-192x192.png',
-        url: '/android-icon-192x192.png',
-      },
+      { url: '/android-icon-36x36.png', sizes: '36x36', type: 'image/png' },
+      { url: '/android-icon-48x48.png', sizes: '48x48', type: 'image/png' },
+      { url: '/android-icon-72x72.png', sizes: '72x72', type: 'image/png' },
+      { url: '/android-icon-96x96.png', sizes: '96x96', type: 'image/png' },
+      { url: '/android-icon-144x144.png', sizes: '144x144', type: 'image/png' },
+      { url: '/android-icon-192x192.png', sizes: '192x192', type: 'image/png' },
+      { url: '/ms-icon-70x70.png', sizes: '70x70', type: 'image/png' },
+      { url: '/ms-icon-144x144.png', sizes: '144x144', type: 'image/png' },
+      { url: '/ms-icon-150x150.png', sizes: '150x150', type: 'image/png' },
+      { url: '/ms-icon-310x310.png', sizes: '310x310', type: 'image/png' },
     ],
   },
   manifest: '/manifest.json',
@@ -79,7 +86,7 @@ export default function RootLayout({
           <div className="sticky top-0 z-50 bg-bg-main">
             <Header />
           </div>
-          <main className="w-full max-w-3xl lg:max-w-4xl xl:max-w-5xl mx-auto px-8 pt-8 pb-16 flex-grow">{children}</main> {/* px-6 -> px-8 */}
+          <main className="w-full max-w-3xl lg:max-w-4xl xl:max-w-5xl mx-auto px-8 pt-8 pb-16 flex-grow">{children}</main>
           <Footer />
         </Providers>
         {NEXT_PUBLIC_GA_ID && <GoogleAnalytics gaId={NEXT_PUBLIC_GA_ID} />}
