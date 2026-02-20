@@ -14,14 +14,13 @@ export interface BlogPost {
   category: string;
   project: string;
   description: string;
+  relatedPosts: string[];
 }
 
-// BlockObjectResponse 확장 (children 속성 추가)
 export type BlockWithChildren = BlockObjectResponse & {
   children?: BlockWithChildren[];
 };
 
-// API 호출 사이에 지연을 주기 위한 헬퍼 함수
 const sleep = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
 
 export async function getAllPosts(dataSourceId: string): Promise<BlogPost[]> {
@@ -55,7 +54,6 @@ export async function getAllPosts(dataSourceId: string): Promise<BlogPost[]> {
 
       cursor = response.next_cursor ?? undefined;
 
-      // API Rate Limit을 피하기 위해 1초 대기
       await sleep(1000);
     }
     return allPosts;
@@ -76,6 +74,9 @@ function mapPageToBlogPost(page: PageObjectResponse): BlogPost {
   const project = properties.project?.type === 'select' ? (properties.project.select?.name ?? '') : '';
   const description = properties.description?.type === 'rich_text' ? (properties.description.rich_text[0]?.plain_text ?? '') : '';
 
+  const relatedPostsProperty = properties.related;
+  const relatedPosts = relatedPostsProperty?.type === 'relation' ? relatedPostsProperty.relation.map((rel) => normalizeId(rel.id)) : [];
+
   return {
     id: normalizeId(page.id),
     title,
@@ -85,6 +86,7 @@ function mapPageToBlogPost(page: PageObjectResponse): BlogPost {
     category,
     project,
     description,
+    relatedPosts,
   };
 }
 
@@ -141,7 +143,6 @@ export async function getPageBlocks(blockId: string): Promise<BlockWithChildren[
 
     const fullBlocks = results.filter((block): block is BlockObjectResponse => 'type' in block);
 
-    // 하위 블록이 있는 경우 재귀적으로 가져오기
     for (const block of fullBlocks) {
       if (block.has_children) {
         const children = await getPageBlocks(block.id);

@@ -31,7 +31,22 @@ interface GraphLink {
   color: string;
 }
 
-const CATEGORY_COLORS = [
+const LIGHT_COLORS = [
+  '#FF9AA2',
+  '#FFB7B2',
+  '#FFDAC1',
+  '#E2F0CB',
+  '#B5EAD7',
+  '#C7CEEA',
+  '#F8BBD0',
+  '#D291BC',
+  '#957DAD',
+  '#E0BBE4',
+  '#FEC8D8',
+  '#FFDFD3',
+];
+
+const DARK_COLORS = [
   '#FF6B6B',
   '#4ECDC4',
   '#45B7D1',
@@ -66,10 +81,12 @@ function GraphViewComponent({ height = 200, posts = [] }: GraphViewProps) {
     const nodes: GraphNode[] = [];
     const links: GraphLink[] = [];
 
+    const colors = resolvedTheme === 'dark' ? DARK_COLORS : LIGHT_COLORS;
+
     const categories = Array.from(new Set(posts.map((p) => p.category).filter(Boolean)));
     const categoryColorMap: Record<string, string> = {};
     categories.forEach((cat, index) => {
-      categoryColorMap[cat] = CATEGORY_COLORS[index % CATEGORY_COLORS.length];
+      categoryColorMap[cat] = colors[index % colors.length];
     });
 
     const projects = new Set<string>();
@@ -106,28 +123,31 @@ function GraphViewComponent({ height = 200, posts = [] }: GraphViewProps) {
           color: resolvedTheme === 'dark' ? 'rgba(255,255,255,0.1)' : 'rgba(0,0,0,0.1)',
         });
       }
-    });
 
-    const categoryGroups: Record<string, BlogPost[]> = {};
-    posts.forEach((post) => {
-      if (post.category) {
-        if (!categoryGroups[post.category]) categoryGroups[post.category] = [];
-        categoryGroups[post.category].push(post);
-      }
-    });
-
-    Object.values(categoryGroups).forEach((group) => {
-      for (let i = 0; i < group.length - 1; i++) {
-        links.push({
-          source: group[i].id,
-          target: group[i + 1].id,
-          color: 'rgba(0,0,0,0)',
+      if (post.relatedPosts && post.relatedPosts.length > 0) {
+        post.relatedPosts.forEach((relatedId) => {
+          const relatedPostExists = posts.some((p) => p.id === relatedId);
+          if (relatedPostExists) {
+            links.push({
+              source: post.id,
+              target: relatedId,
+              color: resolvedTheme === 'dark' ? 'rgba(255,255,255,0.2)' : 'rgba(0,0,0,0.2)',
+            });
+          }
         });
       }
     });
 
     return { nodes, links, categoryColorMap };
   }, [posts, resolvedTheme]);
+
+  useEffect(() => {
+    if (mounted && fgRef.current) {
+      fgRef.current.d3Force('charge')?.strength(-200);
+      fgRef.current.d3Force('link')?.distance(50);
+      fgRef.current.d3ReheatSimulation();
+    }
+  }, [mounted, nodes, links]);
 
   if (!mounted) return <div className="w-full h-[200px] bg-bg-sub rounded-xl animate-pulse" />;
 
@@ -149,7 +169,7 @@ function GraphViewComponent({ height = 200, posts = [] }: GraphViewProps) {
             backgroundColor={isDark ? '#2D2D2D' : '#f3f4f6'}
             enableZoomInteraction={true}
             enableNodeDrag={false}
-            cooldownTicks={100}
+            cooldownTicks={200}
             onEngineStop={() => fgRef.current?.zoomToFit(400)}
             onNodeClick={(node: object) => {
               const graphNode = node as GraphNode;

@@ -94,6 +94,10 @@ This document is a development guide for the Gemini CLI agent to reference when 
   - [x] Group posts by project using a central project node and invisible category links.
   - [x] Add interactivity: Click to navigate, Zoom/Pan support.
   - [x] Optimize performance with `React.memo` and responsive sizing.
+  - [x] **Enhancements:**
+    - [x] Visualize `related` posts as links.
+    - [x] Theme-aware node colors (Pastel for Light, Neon for Dark).
+    - [x] Optimized physics engine settings to prevent node overlap.
 - [x] **Analytics & SEO:**
   - [x] Add `<GoogleAnalytics gaId="..." />` to `src/app/layout.tsx`.
   - [x] Dynamically generate metadata for posts and set up `robots.txt`, `sitemap.xml`.
@@ -112,5 +116,5 @@ This document is a development guide for the Gemini CLI agent to reference when 
 - **Identity:** The Korean name is 윤재현, but use the English name **yunio**. The blog name is **yunio's blog**.
 
 ---
-**Last Updated:** 2026-02-19
-**Agent Status:** Post rendering improved. Ready for About/Resume pages.
+**Last Updated:** 2026-02-20
+**Agent Status:** Graph View enhanced. Ready for About/Resume pages.
