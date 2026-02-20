@@ -31,6 +31,7 @@ This document is a development guide for the Gemini CLI agent to reference when 
   - [x] Establish and apply a consistent import order rule.
 - [x] **Refactoring:**
   - [x] Reorganize `src/components` into `ui`, `layout`, and `features` directories for better maintainability.
+  - [x] Migrate from `@vercel/kv` to `@upstash/redis` and centralize DB logic in `src/lib/db`.
 
 ## 🎨 Design System
 - **Font:** `Pretendard` (Variable)
@@ -117,4 +118,4 @@ This document is a development guide for the Gemini CLI agent to reference when 
 
 ---
 **Last Updated:** 2026-02-20
-**Agent Status:** Graph View enhanced. Ready for About/Resume pages.
+**Agent Status:** Redis migration complete. Ready for About/Resume pages.
