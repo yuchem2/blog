@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState, useRef, useMemo, memo } from 'react';
+import { useEffect, useState, useRef, useMemo, memo, useCallback } from 'react';
 import dynamic from 'next/dynamic';
 import { useTheme } from 'next-themes';
 import { useRouter } from 'next/navigation';
@@ -20,15 +20,15 @@ interface GraphNode {
   id: string;
   name: string;
   val: number;
-  color: string;
   type: 'post' | 'project';
   category?: string;
+  categoryIndex?: number;
 }
 
 interface GraphLink {
-  source: string;
-  target: string;
-  color: string;
+  source: string | GraphNode;
+  target: string | GraphNode;
+  type?: 'project' | 'related';
 }
 
 const LIGHT_COLORS = [
@@ -61,6 +61,17 @@ const DARK_COLORS = [
   '#E74C3C',
 ];
 
+const THEME_COLORS = {
+  light: {
+    textMain: '#1B1B1B',
+    linkBase: '31, 41, 55',
+  },
+  dark: {
+    textMain: '#E0E0E0',
+    linkBase: '162, 169, 176',
+  },
+};
+
 const GRAPH_WIDTH = 254;
 
 function GraphViewComponent({ height = 200, posts = [] }: GraphViewProps) {
@@ -69,24 +80,28 @@ function GraphViewComponent({ height = 200, posts = [] }: GraphViewProps) {
   const fgRef = useRef<ForceGraphMethods | undefined>(undefined);
   const router = useRouter();
 
+  const resolvedThemeRef = useRef(resolvedTheme);
+  const categoryColorMapRef = useRef<Record<string, string>>({});
+  const themeColorsRef = useRef<Record<string, string>>({});
+
   useEffect(() => {
     requestAnimationFrame(() => {
       setMounted(true);
     });
   }, []);
 
-  const { nodes, links, categoryColorMap } = useMemo(() => {
-    if (posts.length === 0) return { nodes: [], links: [], categoryColorMap: {} };
+  const { graphData, categories } = useMemo(() => {
+    if (posts.length === 0) {
+      return { graphData: { nodes: [], links: [] }, categories: [] };
+    }
 
     const nodes: GraphNode[] = [];
     const links: GraphLink[] = [];
 
-    const colors = resolvedTheme === 'dark' ? DARK_COLORS : LIGHT_COLORS;
-
     const categories = Array.from(new Set(posts.map((p) => p.category).filter(Boolean)));
-    const categoryColorMap: Record<string, string> = {};
+    const categoryIndexMap: Record<string, number> = {};
     categories.forEach((cat, index) => {
-      categoryColorMap[cat] = colors[index % colors.length];
+      categoryIndexMap[cat] = index;
     });
 
     const projects = new Set<string>();
@@ -101,7 +116,6 @@ function GraphViewComponent({ height = 200, posts = [] }: GraphViewProps) {
         id: `proj-${project}`,
         name: project,
         val: 3,
-        color: resolvedTheme === 'dark' ? '#444' : '#ccc',
         type: 'project',
       });
     });
@@ -111,16 +125,16 @@ function GraphViewComponent({ height = 200, posts = [] }: GraphViewProps) {
         id: post.id,
         name: post.title,
         category: post.category,
-        val: 5,
-        color: post.category ? categoryColorMap[post.category] : resolvedTheme === 'dark' ? '#888' : '#999',
+        val: 4,
         type: 'post',
+        categoryIndex: post.category ? categoryIndexMap[post.category] : -1,
       });
 
       if (post.project) {
         links.push({
           source: `proj-${post.project}`,
           target: post.id,
-          color: resolvedTheme === 'dark' ? 'rgba(255,255,255,0.1)' : 'rgba(0,0,0,0.1)',
+          type: 'project',
         });
       }
 
@@ -131,27 +145,55 @@ function GraphViewComponent({ height = 200, posts = [] }: GraphViewProps) {
             links.push({
               source: post.id,
               target: relatedId,
-              color: resolvedTheme === 'dark' ? 'rgba(255,255,255,0.2)' : 'rgba(0,0,0,0.2)',
+              type: 'related',
             });
           }
         });
       }
     });
 
-    return { nodes, links, categoryColorMap };
-  }, [posts, resolvedTheme]);
+    return { graphData: { nodes, links }, categories };
+  }, [posts]);
+
+  const categoryColorMap = useMemo(() => {
+    const colors = resolvedTheme === 'dark' ? DARK_COLORS : LIGHT_COLORS;
+    const map: Record<string, string> = {};
+    categories.forEach((cat, index) => {
+      map[cat] = colors[index % colors.length];
+    });
+    return map;
+  }, [categories, resolvedTheme]);
+
+  const themeColors = useMemo(() => {
+    return resolvedTheme === 'dark' ? THEME_COLORS.dark : THEME_COLORS.light;
+  }, [resolvedTheme]);
+
+  useEffect(() => {
+    resolvedThemeRef.current = resolvedTheme;
+    categoryColorMapRef.current = categoryColorMap;
+    themeColorsRef.current = themeColors;
+  }, [resolvedTheme, categoryColorMap, themeColors]);
+
+  const getNodeColor = useCallback((node: object) => {
+    const n = node as GraphNode;
+
+    if (n.category) return categoryColorMapRef.current[n.category];
+    return themeColorsRef.current.textMain;
+  }, []);
 
   useEffect(() => {
     if (mounted && fgRef.current) {
       fgRef.current.d3Force('charge')?.strength(-200);
       fgRef.current.d3Force('link')?.distance(50);
       fgRef.current.d3ReheatSimulation();
+
+      setTimeout(() => {
+        fgRef.current?.zoomToFit(400, 20);
+      }, 300);
     }
-  }, [mounted, nodes, links]);
+  }, [mounted, posts]);
 
   if (!mounted) return <div className="w-full h-[200px] bg-bg-sub rounded-xl animate-pulse" />;
-
-  const isDark = resolvedTheme === 'dark';
 
   return (
     <div className="flex flex-col gap-2 w-full items-center">
@@ -161,16 +203,36 @@ function GraphViewComponent({ height = 200, posts = [] }: GraphViewProps) {
             ref={fgRef}
             width={GRAPH_WIDTH}
             height={height}
-            graphData={{ nodes, links }}
+            graphData={graphData}
             nodeLabel="name"
-            nodeColor="color"
+            nodeColor={getNodeColor}
+            nodeVal="val"
             nodeRelSize={4}
-            linkColor={(link: object) => (link as GraphLink).color}
-            backgroundColor={isDark ? '#2D2D2D' : '#f3f4f6'}
+            linkCanvasObjectMode={() => 'replace'}
+            linkCanvasObject={(link, ctx) => {
+              const l = link as GraphLink;
+              const { linkBase } = themeColorsRef.current;
+
+              if (typeof link.source === 'object' && typeof link.target === 'object') {
+                const { x: sx, y: sy } = link.source;
+                const { x: tx, y: ty } = link.target;
+
+                if (sx == null || sy == null || tx == null || ty == null) return;
+
+                ctx.beginPath();
+                ctx.moveTo(sx, sy);
+                ctx.lineTo(tx, ty);
+
+                ctx.strokeStyle = l.type === 'project' ? `rgba(${linkBase}, 0.7)` : `rgba(${linkBase}, 0.5)`;
+                ctx.lineWidth = 1;
+                ctx.stroke();
+              }
+            }}
+            backgroundColor="rgba(0,0,0,0)"
             enableZoomInteraction={true}
             enableNodeDrag={false}
             cooldownTicks={200}
-            onEngineStop={() => fgRef.current?.zoomToFit(400)}
+            onEngineStop={() => fgRef.current?.zoomToFit(400, 20)}
             onNodeClick={(node: object) => {
               const graphNode = node as GraphNode;
               if (graphNode.type === 'post') {
