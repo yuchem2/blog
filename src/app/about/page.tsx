@@ -1,45 +1,14 @@
-import Image from 'next/image';
-import { Mail } from 'lucide-react';
-import { Button } from '@/components/ui/Button';
-import { GithubIcon } from '@/components/icons/GithubIcon';
+import { ProfileSection } from '@/components/features/about/ProfileSection';
 
 export const metadata = {
-  title: 'About | Yunio',
+  title: 'About',
   description: 'About Jaehyun Yoon (Yunio)',
 };
 
 export default function AboutPage() {
   return (
     <div className="py-12 space-y-20">
-      {/* Profile Section */}
-      <section className="flex flex-col md:flex-row items-center gap-10 text-center md:text-left animate-in fade-in slide-in-from-bottom-4 duration-700">
-        <div className="relative w-48 h-48 rounded-full overflow-hidden border-4 border-bg-sub shadow-xl flex-shrink-0">
-          <Image src="/profile.jpg" alt="Profile" fill className="object-cover" priority />
-        </div>
-        <div className="space-y-5">
-          <div>
-            <h1 className="text-4xl font-extrabold tracking-tight">Yunio (Jaehyun Yoon)</h1>
-            <p className="text-xl text-primary font-medium mt-1">Full Stack Developer</p>
-          </div>
-          <p className="text-text-main leading-relaxed text-lg">
-            호기심을 기술로 실체화하며, 필요한 도구를 신속하게 습득하여 결과를 만드는 개발자입니다.
-            <br className="hidden md:block" />
-            실행 중심의 학습을 통해 낯선 기술도 빠르게 내재화하며, 지식 공유를 통한 동반 성장을 지향합니다.
-          </p>
-          <div className="flex justify-center md:justify-start gap-3">
-            <Button variant="outline" size="icon" asChild className="rounded-full hover:text-primary hover:border-primary transition-colors">
-              <a href="https://github.com/yuchem2" target="_blank" rel="noopener noreferrer" aria-label="GitHub">
-                <GithubIcon className="w-5 h-5" />
-              </a>
-            </Button>
-            <Button variant="outline" size="icon" asChild className="rounded-full hover:text-primary hover:border-primary transition-colors">
-              <a href="mailto:yuchem2@gmail.com" aria-label="Email">
-                <Mail className="w-5 h-5" />
-              </a>
-            </Button>
-          </div>
-        </div>
-      </section>
+      <ProfileSection />
 
       {/* Skills Section */}
       <section className="space-y-8">
@@ -200,7 +169,6 @@ function ProjectItem({
       {/* 타임라인 선과 원 */}
       <div className="relative flex flex-col items-center">
         <div className="w-3 h-3 rounded-full bg-border-main group-hover:bg-primary transition-colors z-10 flex-shrink-0 mt-1.5" />
-        {/* 마지막 아이템이어도 선을 그림. 단, isLast일 때는 그라데이션으로 사라지게 하거나 짧게 처리할 수도 있음. 여기서는 그냥 유지. */}
         <div
           className={
             isLast
