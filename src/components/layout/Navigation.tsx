@@ -6,8 +6,8 @@ import clsx from 'clsx';
 import { Button } from '../ui/Button';
 
 const navLinks = [
+  { href: '/', label: 'Blog' }, // Blog 링크 다시 추가
   { href: '/about', label: 'About' },
-  { href: '/resume', label: 'Resume' },
 ];
 
 interface NavigationProps {
@@ -30,7 +30,7 @@ export function Navigation({ className, onLinkClick }: NavigationProps) {
               className={clsx(
                 'justify-start',
                 isMobile ? 'w-full py-4 text-lg' : 'text-sm',
-                pathname === href ? 'bg-bg-sub text-primary' : 'text-text-main hover:bg-bg-sub hover:text-text-main',
+                pathname === href ? 'bg-bg-sub text-primary' : 'text-text-sub hover:bg-bg-sub hover:text-text-main',
               )}
               onClick={onLinkClick}
             >
