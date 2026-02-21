@@ -92,7 +92,6 @@ This document is a development guide for the Gemini CLI agent to reference when 
   - [x] Skills section categorized by domain.
   - [x] Project timeline with detailed descriptions.
   - [x] Experience, Activities, Education, and Awards sections.
-- [ ] **Resume Page UI:** Design and implement the Resume page, considering either a PDF embed or a custom-designed layout.
 
 ### 3. Advanced Features
 - [x] **Graph View (Obsidian Style):**
@@ -116,6 +115,11 @@ This document is a development guide for the Gemini CLI agent to reference when 
     - [x] Admin deletion support via `ADMIN_PASSWORD`.
     - [x] User-friendly UI with inline forms and validation feedback.
 
+## 🔮 Future Improvements (Backlog)
+- [ ] **About Page CMS Integration:** Connect the About page content to a Notion page for easier updates.
+- [ ] **Search Functionality:** Implement full-text search for blog posts.
+- [ ] **RSS Feed:** Generate an RSS feed for blog subscription.
+
 ## 📝 User Notes
 - Keep the design as simple as possible.
 - The PDF resume/portfolio will be added manually later.
@@ -124,4 +128,4 @@ This document is a development guide for the Gemini CLI agent to reference when 
 
 ---
 **Last Updated:** 2026-02-21
-**Agent Status:** About page implemented.
+**Agent Status:** Development paused. Core features complete.
