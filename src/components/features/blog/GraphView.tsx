@@ -84,12 +84,6 @@ function GraphViewComponent({ height = 200, posts = [] }: GraphViewProps) {
   const categoryColorMapRef = useRef<Record<string, string>>({});
   const themeColorsRef = useRef<Record<string, string>>({});
 
-  useEffect(() => {
-    requestAnimationFrame(() => {
-      setMounted(true);
-    });
-  }, []);
-
   const { graphData, categories } = useMemo(() => {
     if (posts.length === 0) {
       return { graphData: { nodes: [], links: [] }, categories: [] };
@@ -168,12 +162,6 @@ function GraphViewComponent({ height = 200, posts = [] }: GraphViewProps) {
     return resolvedTheme === 'dark' ? THEME_COLORS.dark : THEME_COLORS.light;
   }, [resolvedTheme]);
 
-  useEffect(() => {
-    resolvedThemeRef.current = resolvedTheme;
-    categoryColorMapRef.current = categoryColorMap;
-    themeColorsRef.current = themeColors;
-  }, [resolvedTheme, categoryColorMap, themeColors]);
-
   const getNodeColor = useCallback((node: object) => {
     const n = node as GraphNode;
 
@@ -182,16 +170,16 @@ function GraphViewComponent({ height = 200, posts = [] }: GraphViewProps) {
   }, []);
 
   useEffect(() => {
-    if (mounted && fgRef.current) {
-      fgRef.current.d3Force('charge')?.strength(-200);
-      fgRef.current.d3Force('link')?.distance(50);
-      fgRef.current.d3ReheatSimulation();
+    requestAnimationFrame(() => {
+      setMounted(true);
+    });
+  }, []);
 
-      setTimeout(() => {
-        fgRef.current?.zoomToFit(400, 20);
-      }, 300);
-    }
-  }, [mounted, posts]);
+  useEffect(() => {
+    resolvedThemeRef.current = resolvedTheme;
+    categoryColorMapRef.current = categoryColorMap;
+    themeColorsRef.current = themeColors;
+  }, [resolvedTheme, categoryColorMap, themeColors]);
 
   if (!mounted) return <div className="w-full h-[200px] bg-bg-sub rounded-xl animate-pulse" />;
 
@@ -232,7 +220,14 @@ function GraphViewComponent({ height = 200, posts = [] }: GraphViewProps) {
             enableZoomInteraction={true}
             enableNodeDrag={false}
             cooldownTicks={200}
-            onEngineStop={() => fgRef.current?.zoomToFit(400, 20)}
+            warmupTicks={100}
+            onEngineStop={() => {
+              requestAnimationFrame(() => {
+                setTimeout(() => {
+                  fgRef.current?.zoomToFit(400, 20);
+                }, 50);
+              });
+            }}
             onNodeClick={(node: object) => {
               const graphNode = node as GraphNode;
               if (graphNode.type === 'post') {
