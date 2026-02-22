@@ -104,9 +104,9 @@ export function NotionBlock({ block, level = 0 }: { block: BlockWithChildren; le
       const imageUrl = block.image.type === 'external' ? block.image.external.url : block.image.file.url;
       const caption = block.image.caption.length > 0 ? block.image.caption[0].plain_text : '';
       return (
-        <figure className="my-8">
+        <figure className="my-8 flex flex-col items-center">
           {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img src={imageUrl} alt={caption} className="rounded-lg w-full h-auto object-cover" />
+          <img src={imageUrl} alt={caption} className="rounded-lg max-w-full h-auto object-contain" />
           {caption && <figcaption className="text-center text-sm text-text-sub mt-2">{caption}</figcaption>}
         </figure>
       );
