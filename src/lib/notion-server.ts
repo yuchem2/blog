@@ -1,5 +1,5 @@
 import { Client, isFullPage, type PageObjectResponse, type BlockObjectResponse, type GetDataSourceResponse } from '@notionhq/client';
-import { NOTION_TOKEN } from './env';
+import { NOTION_TOKEN, NOTION_DATA_SOURCE_ID } from './env';
 
 export const notionClient = new Client({
   auth: NOTION_TOKEN,
@@ -15,6 +15,7 @@ export interface BlogPost {
   project: string;
   description: string;
   relatedPosts: string[];
+  backlinks: string[];
 }
 
 export type BlockWithChildren = BlockObjectResponse & {
@@ -23,7 +24,13 @@ export type BlockWithChildren = BlockObjectResponse & {
 
 const sleep = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
 
-export async function getAllPosts(dataSourceId: string): Promise<BlogPost[]> {
+// 전체 게시글을 가져오는 함수 (캐싱 활용 권장)
+export async function getAllPosts(dataSourceId: string = NOTION_DATA_SOURCE_ID || ''): Promise<BlogPost[]> {
+  if (!dataSourceId) {
+    console.error('NOTION_DATA_SOURCE_ID is not defined');
+    return [];
+  }
+
   let allPosts: BlogPost[] = [];
   let cursor: string | undefined;
 
@@ -77,6 +84,9 @@ function mapPageToBlogPost(page: PageObjectResponse): BlogPost {
   const relatedPostsProperty = properties.related;
   const relatedPosts = relatedPostsProperty?.type === 'relation' ? relatedPostsProperty.relation.map((rel) => normalizeId(rel.id)) : [];
 
+  const backlinksProperty = properties.backlinks || properties['역방향'];
+  const backlinks = backlinksProperty?.type === 'relation' ? backlinksProperty.relation.map((rel) => normalizeId(rel.id)) : [];
+
   return {
     id: normalizeId(page.id),
     title,
@@ -87,6 +97,7 @@ function mapPageToBlogPost(page: PageObjectResponse): BlogPost {
     project,
     description,
     relatedPosts,
+    backlinks,
   };
 }
 
@@ -129,6 +140,28 @@ export async function getPostById(pageId: string): Promise<BlogPost | undefined>
     console.error(`Error fetching page by id "${pageId}":`, error);
     return undefined;
   }
+}
+
+// 여러 ID로 게시글 정보를 한 번에 가져오는 함수 (개선됨)
+export async function getPostsByIds(ids: string[]): Promise<BlogPost[]> {
+  if (ids.length === 0) return [];
+
+  // 전체 게시글을 가져와서 메모리에서 필터링 (API 호출 최소화)
+  // getAllPosts는 Next.js의 fetch 캐싱을 활용할 수 있음 (ISR 등)
+  const allPosts = await getAllPosts();
+
+  // ID 기반 Map 생성 (조회 성능 O(1))
+  const postsMap = new Map(allPosts.map((post) => [post.id, post]));
+
+  const posts: BlogPost[] = [];
+  ids.forEach((id) => {
+    const post = postsMap.get(id);
+    if (post) {
+      posts.push(post);
+    }
+  });
+
+  return posts;
 }
 
 export async function getPageBlocks(blockId: string): Promise<BlockWithChildren[]> {

@@ -87,6 +87,9 @@ This document is a development guide for the Gemini CLI agent to reference when 
     - [x] Enhanced `CodeBlock` with language label and copy button.
     - [x] Support for `table`, `column_list`, `quote` (with styling), and `divider`.
     - [x] Improved light mode visibility (colors, borders).
+  - [x] **Related Posts & Backlinks:**
+    - [x] Fetch and display related posts and backlinks from Notion relation properties.
+    - [x] Display as rich preview cards with title, category, tags, and description.
 - [x] **About Page UI:** Design and implement the content and layout for the About page.
   - [x] Profile section with image and social links.
   - [x] Skills section categorized by domain.
@@ -127,5 +130,5 @@ This document is a development guide for the Gemini CLI agent to reference when 
 - **Identity:** The Korean name is 윤재현, but use the English name **yunio**. The blog name is **yunio's blog**.
 
 ---
-**Last Updated:** 2026-02-21
-**Agent Status:** Development paused. Core features complete.
+**Last Updated:** 2026-02-26
+**Agent Status:** Related posts feature implemented.

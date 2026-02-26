@@ -1,9 +1,10 @@
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import type { Metadata } from 'next';
+import { ArrowRight, Link as LinkIcon } from 'lucide-react';
 
-import { getAllPosts, getPostById, getPageBlocks } from '@/lib/notion-server';
-import { NotionBlockRenderer } from '@/components/features/post/NotionBlockRenderer'; // NotionBlockRenderer import
+import { getAllPosts, getPostById, getPageBlocks, getPostsByIds, BlogPost } from '@/lib/notion-server';
+import { NotionBlockRenderer } from '@/components/features/post/NotionBlockRenderer';
 import { TableOfContents } from '@/components/features/post/TableOfContents';
 import { ViewCounter } from '@/components/features/post/ViewCounter';
 import { Comments } from '@/components/features/post/Comments';
@@ -42,6 +43,9 @@ export default async function PostPage({ params }: { params: Promise<{ id: strin
 
   const blocks = await getPageBlocks(post.id);
   const toc = extractTocFromBlocks(blocks);
+
+  // 연관된 게시글과 역방향 게시글 정보 가져오기
+  const [relatedPosts, backlinks] = await Promise.all([getPostsByIds(post.relatedPosts), getPostsByIds(post.backlinks)]);
 
   return (
     <div className="relative flex justify-center">
@@ -86,14 +90,76 @@ export default async function PostPage({ params }: { params: Promise<{ id: strin
         </header>
 
         <div className="prose dark:prose-invert max-w-none">
-          {/* NotionBlockRenderer 사용 */}
           <NotionBlockRenderer blocks={blocks} />
         </div>
+
+        {/* 연관된 게시글 및 역방향 링크 섹션 */}
+        <RelatedPosts backlinks={backlinks} relatedPosts={relatedPosts} />
 
         <Comments postId={post.id} />
       </article>
 
       <TableOfContents toc={toc} />
+    </div>
+  );
+}
+
+function PostCard({ post }: { post: BlogPost }) {
+  return (
+    <Link href={`/post/${post.id}`} className="block group">
+      <div className="border border-border-main rounded-xl p-4 hover:border-primary transition-colors bg-bg-sub/50 hover:bg-bg-sub h-full flex flex-col">
+        <div className="flex items-center gap-2 text-xs text-text-sub mb-2">
+          {post.category && <span className="text-primary font-medium">{post.category}</span>}
+          {post.category && <span>•</span>}
+          <span>{formatDate(post.createdAt)}</span>
+        </div>
+        <h4 className="text-lg font-bold mb-2 group-hover:text-primary transition-colors line-clamp-2">{post.title}</h4>
+        {post.description && <p className="text-sm text-text-sub line-clamp-2 mb-3 flex-grow">{post.description}</p>}
+        <div className="flex flex-wrap gap-1.5 mt-auto">
+          {post.tags.slice(0, 3).map((tag) => (
+            <span key={tag} className="text-xs px-1.5 py-0.5 bg-bg-main rounded border border-border-main text-text-sub">
+              #{tag}
+            </span>
+          ))}
+        </div>
+      </div>
+    </Link>
+  );
+}
+
+function RelatedPosts({ backlinks, relatedPosts }: { backlinks: BlogPost[]; relatedPosts: BlogPost[] }) {
+  const hasLinks = backlinks.length > 0 || relatedPosts.length > 0;
+  if (!hasLinks) return null;
+
+  return (
+    <div className="mt-20 pt-10 border-t border-border-main space-y-12">
+      {backlinks.length > 0 && (
+        <section>
+          <h3 className="text-xl font-bold mb-6 flex items-center gap-2 text-text-main">
+            <LinkIcon className="w-5 h-5 text-primary" />
+            <span>이 글을 참조하는 글</span>
+          </h3>
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            {backlinks.map((post) => (
+              <PostCard key={post.id} post={post} />
+            ))}
+          </div>
+        </section>
+      )}
+
+      {relatedPosts.length > 0 && (
+        <section>
+          <h3 className="text-xl font-bold mb-6 flex items-center gap-2 text-text-main">
+            <ArrowRight className="w-5 h-5 text-primary" />
+            <span>더 알아보기</span>
+          </h3>
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            {relatedPosts.map((post) => (
+              <PostCard key={post.id} post={post} />
+            ))}
+          </div>
+        </section>
+      )}
     </div>
   );
 }
