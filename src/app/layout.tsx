@@ -23,10 +23,10 @@ export const metadata: Metadata = {
     template: '%s | yunio.dev',
     default: "yunio's blog",
   },
-  description: 'A blog about development, life, and thoughts.',
+  description: 'A development blog by Yunio', // 수정
   openGraph: {
     title: "yunio's blog",
-    description: 'A blog about development, life, and thoughts.',
+    description: 'A development blog by Yunio', // 수정
     url: 'https://yunio.dev',
     siteName: "yunio's blog",
     locale: 'ko_KR',
@@ -35,7 +35,7 @@ export const metadata: Metadata = {
   twitter: {
     card: 'summary_large_image',
     title: "yunio's blog",
-    description: 'A blog about development, life, and thoughts.',
+    description: 'A development blog by Yunio', // 수정
   },
   icons: {
     icon: [
