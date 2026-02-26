@@ -1,7 +1,11 @@
 import { ImageResponse } from 'next/og';
+import { join } from 'path';
+import { readFile } from 'fs/promises';
 import { getPostById } from '@/lib/notion-server';
 
-export const runtime = 'edge';
+// export const runtime = 'edge';
+
+const baseUrl = process.env.NEXT_PUBLIC_VERCEL_URL || 'http://localhost:3000';
 
 export const alt = "Yunio's Blog Post";
 export const size = {
@@ -20,10 +24,10 @@ export default async function Image({ params }: { params: Promise<{ id: string }
   }
 
   try {
-    const fontRegularData = await fetch(new URL('../../fonts/Pretendard-Regular.ttf', import.meta.url)).then((res) => res.arrayBuffer());
-    const fontBoldData = await fetch(new URL('../../fonts/Pretendard-Bold.ttf', import.meta.url)).then((res) => res.arrayBuffer());
-    const imageData = await fetch(new URL('../../../../public/logo.png', import.meta.url)).then((res) => res.arrayBuffer());
-    const imageBase64 = Buffer.from(imageData).toString('base64');
+    const fontRegularData = readFile(join(process.cwd(), 'src/app/fonts/Pretendard-Regular.ttf'));
+    const fontBoldData = readFile(join(process.cwd(), 'src/app/fonts/Pretendard-Bold.ttf'));
+
+    const [fontRegular, fontBold] = await Promise.all([fontRegularData, fontBoldData]);
 
     return new ImageResponse(
       <div
@@ -73,13 +77,7 @@ export default async function Image({ params }: { params: Promise<{ id: string }
 
         {/* 로고 (우측 상단) */}
         {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img
-          src={`data:image/png;base64,${imageBase64}`}
-          alt="Blog Logo"
-          width="100"
-          height="100"
-          style={{ position: 'absolute', top: 60, right: 60 }}
-        />
+        <img src={`${baseUrl}/logo.png`} alt="Blog Logo" width="100" height="100" style={{ position: 'absolute', top: 60, right: 60 }} />
 
         {/* 상단: 블로그 이름 */}
         <div style={{ display: 'flex', fontSize: 32, fontWeight: 700, color: '#8B5CF6', marginBottom: '10px' }}>Yunio&apos;s Blog</div>
@@ -164,13 +162,13 @@ export default async function Image({ params }: { params: Promise<{ id: string }
         fonts: [
           {
             name: 'Pretendard',
-            data: fontRegularData,
+            data: fontRegular,
             style: 'normal',
             weight: 400,
           },
           {
             name: 'Pretendard',
-            data: fontBoldData,
+            data: fontBold,
             style: 'normal',
             weight: 700,
           },

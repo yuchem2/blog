@@ -1,6 +1,10 @@
 import { ImageResponse } from 'next/og';
+import { join } from 'path';
+import { readFile } from 'fs/promises';
 
-export const runtime = 'edge';
+const baseUrl = process.env.NEXT_PUBLIC_VERCEL_URL || 'http://localhost:3000';
+
+// export const runtime = 'edge'; // Node.js 런타임 사용
 
 export const alt = "Yunio's Blog";
 export const size = {
@@ -11,10 +15,11 @@ export const size = {
 export const contentType = 'image/png';
 
 export default async function Image() {
-  const fontRegularData = await fetch(new URL('./fonts/Pretendard-Regular.ttf', import.meta.url)).then((res) => res.arrayBuffer());
-  const fontBoldData = await fetch(new URL('./fonts/Pretendard-Bold.ttf', import.meta.url)).then((res) => res.arrayBuffer());
-  const imageData = await fetch(new URL('../../public/logo.png', import.meta.url)).then((res) => res.arrayBuffer());
-  const imageBase64 = Buffer.from(imageData).toString('base64');
+  // Node.js의 fs/promises를 사용하여 파일 읽기
+  const fontRegularData = readFile(join(process.cwd(), 'src/app/fonts/Pretendard-Regular.ttf'));
+  const fontBoldData = readFile(join(process.cwd(), 'src/app/fonts/Pretendard-Bold.ttf'));
+
+  const [fontRegular, fontBold] = await Promise.all([fontRegularData, fontBoldData]);
 
   return new ImageResponse(
     <div
@@ -55,7 +60,7 @@ export default async function Image() {
         }}
       >
         {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img src={`data:image/png;base64,${imageBase64}`} alt="Blog Logo" width="250" height="250" />
+        <img src={`${baseUrl}/logo.png`} alt="Blog Logo" width="250" height="250" />
       </div>
 
       {/* 텍스트 (우측) */}
@@ -86,13 +91,13 @@ export default async function Image() {
       fonts: [
         {
           name: 'Pretendard',
-          data: fontRegularData,
+          data: fontRegular,
           style: 'normal',
           weight: 400,
         },
         {
           name: 'Pretendard',
-          data: fontBoldData,
+          data: fontBold,
           style: 'normal',
           weight: 700,
         },
