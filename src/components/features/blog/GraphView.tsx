@@ -195,6 +195,8 @@ function GraphViewComponent({ height = 200, posts = [] }: GraphViewProps) {
             nodeLabel="name"
             nodeColor={getNodeColor}
             nodeVal="val"
+            d3AlphaDecay={0.05}
+            d3VelocityDecay={0.4}
             nodeRelSize={4}
             linkCanvasObjectMode={() => 'replace'}
             linkCanvasObject={(link, ctx) => {
