@@ -1,6 +1,9 @@
-import { ReactNode } from 'react';
+'use client';
+
+import { ReactNode, useState, useCallback } from 'react';
 import { RichTextItemResponse } from '@notionhq/client/build/src/api-endpoints';
 import { BlockWithChildren } from '@/lib/notion-server';
+import clsx from 'clsx';
 
 import { CodeBlock } from './CodeBlock';
 import { NotionBlockRenderer } from './NotionBlockRenderer';
@@ -41,6 +44,37 @@ function RichText({ text }: { text: RichTextItemResponse[] }) {
         return <span key={i}>{content}</span>;
       })}
     </>
+  );
+}
+
+function ImageBlock({ imageUrl, caption }: { imageUrl: string; caption: string }) {
+  const [isLoading, setIsLoading] = useState(true);
+
+  // ref 콜백을 사용하여 DOM 노드가 생성될 때 이미 로드되었는지 확인
+  const imageRef = useCallback((node: HTMLImageElement) => {
+    if (node !== null) {
+      if (node.complete) {
+        setIsLoading(false);
+      }
+    }
+  }, []);
+
+  return (
+    <figure className="my-8 flex flex-col items-center w-full">
+      <div className={clsx('relative w-full flex justify-center', isLoading && 'min-h-[200px]')}>
+        {isLoading && <div className="absolute inset-0 bg-bg-sub animate-pulse rounded-lg w-full h-full" />}
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img
+          ref={imageRef}
+          src={imageUrl}
+          alt={caption}
+          className={clsx('rounded-lg max-w-full h-auto object-contain transition-opacity duration-500', isLoading ? 'opacity-0' : 'opacity-100')}
+          onLoad={() => setIsLoading(false)}
+          loading="lazy"
+        />
+      </div>
+      {caption && <figcaption className="text-center text-base text-text-sub mt-3">{caption}</figcaption>}
+    </figure>
   );
 }
 
@@ -103,13 +137,7 @@ export function NotionBlock({ block, level = 0 }: { block: BlockWithChildren; le
     case 'image':
       const imageUrl = block.image.type === 'external' ? block.image.external.url : block.image.file.url;
       const caption = block.image.caption.length > 0 ? block.image.caption[0].plain_text : '';
-      return (
-        <figure className="my-8 flex flex-col items-center">
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img src={imageUrl} alt={caption} className="rounded-lg max-w-full h-auto object-contain" />
-          {caption && <figcaption className="text-center text-sm text-text-sub mt-2">{caption}</figcaption>}
-        </figure>
-      );
+      return <ImageBlock imageUrl={imageUrl} caption={caption} />;
     case 'divider':
       return <hr className="my-8 border-t border-border-main" />;
     case 'table':
@@ -136,7 +164,7 @@ export function NotionBlock({ block, level = 0 }: { block: BlockWithChildren; le
       );
     case 'column_list':
       return (
-        <div className="flex flex-col md:flex-row gap-4 my-4 w-full">
+        <div className="flex flex-row gap-4 my-4 w-full">
           {block.children?.map((child) => (
             <NotionBlock key={child.id} block={child} level={level} />
           ))}
