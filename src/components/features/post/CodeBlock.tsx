@@ -1,9 +1,9 @@
 'use client';
 
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState, useMemo } from 'react';
 import { useTheme } from 'next-themes';
 import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
-import { vscDarkPlus, prism } from 'react-syntax-highlighter/dist/esm/styles/prism';
+import { oneDark, oneLight } from 'react-syntax-highlighter/dist/esm/styles/prism';
 import { Check, Copy } from 'lucide-react';
 
 interface CodeBlockProps {
@@ -88,11 +88,10 @@ export function CodeBlock({ language, code }: CodeBlockProps) {
       <div className="text-sm">
         <SyntaxHighlighter
           language={language}
-          style={isDark ? vscDarkPlus : prism}
+          style={isDark ? oneDark : oneLight}
           customStyle={{
             margin: 0,
-            borderRadius: 0, // 상단 헤더가 있으므로 둥근 모서리 제거
-            backgroundColor: isDark ? '#1E1E1E' : '#f4f4f5',
+            borderRadius: 0,
             padding: '1.5rem',
           }}
           showLineNumbers={true}
