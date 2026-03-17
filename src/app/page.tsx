@@ -1,3 +1,4 @@
+import type { Metadata } from 'next';
 import Link from 'next/link';
 import { ArrowRight } from 'lucide-react';
 import { getAllPosts, BlogPost } from '@/lib/notion-server';
@@ -8,6 +9,12 @@ import { ViewCounter } from '@/components/features/post/ViewCounter';
 import { formatDate } from '@/lib/utils'; // formatDate import
 
 export const revalidate = 3600;
+
+export const metadata: Metadata = {
+  alternates: {
+    canonical: '/',
+  },
+};
 
 const POSTS_PER_PAGE = 10;
 
