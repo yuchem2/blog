@@ -8,10 +8,10 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const baseUrl = 'https://yunio.dev';
 
   // 정적 페이지
-  const routes = ['', '/about'].map((route) => ({
-    url: `${baseUrl}${route}`,
-    lastModified: new Date().toISOString().split('T')[0],
-  }));
+  const routes = [
+    { url: baseUrl, lastModified: '2026-03-17' },
+    { url: `${baseUrl}/about`, lastModified: '2026-03-17' },
+  ];
 
   if (!NOTION_DATA_SOURCE_ID) {
     return routes;

@@ -41,6 +41,12 @@ export async function generateMetadata({ params }: { params: Promise<{ id: strin
       type: 'article',
       publishedTime: post.createdAt,
       modifiedTime: post.updatedAt,
+      authors: ['Jaehyun Yoon'],
+    },
+    twitter: {
+      card: 'summary_large_image',
+      title: post.title,
+      description: post.description,
     },
   };
 }
