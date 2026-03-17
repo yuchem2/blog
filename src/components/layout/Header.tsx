@@ -46,8 +46,8 @@ export function Header() {
           <div className="p-4 flex flex-col gap-4">
             <Navigation className="flex-col items-start gap-2" onLinkClick={closeMenu} />
             <div className="border-t border-border-main pt-4 flex justify-between items-center px-4">
-              <span className="text-lg font-medium text-text-sub">Theme</span> {/* text-lg로 변경 */}
-              <ThemeToggle size="default" /> {/* size="default"로 변경하여 크기 키움 (기본 icon 사이즈보다 큼) */}
+              <span className="text-lg font-medium text-text-sub">Theme</span>
+              <ThemeToggle size="default" />
             </div>
           </div>
         </div>

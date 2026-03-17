@@ -4,8 +4,6 @@ import { readFile } from 'fs/promises';
 
 const baseUrl = process.env.NEXT_PUBLIC_VERCEL_URL || 'http://localhost:3000';
 
-// export const runtime = 'edge'; // Node.js 런타임 사용
-
 export const alt = "Yunio's Blog";
 export const size = {
   width: 1200,

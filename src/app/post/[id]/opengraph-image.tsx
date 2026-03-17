@@ -3,8 +3,6 @@ import { join } from 'path';
 import { readFile } from 'fs/promises';
 import { getPostById } from '@/lib/notion-server';
 
-// export const runtime = 'edge';
-
 const baseUrl = process.env.NEXT_PUBLIC_VERCEL_URL || 'http://localhost:3000';
 
 export const alt = "Yunio's Blog Post";

@@ -28,10 +28,6 @@ export function TableOfContents({ toc }: TableOfContentsProps) {
 
     // 초기 실행
     handleResize();
-
-    // 리사이즈 이벤트 리스너 (선택 사항, 화면 크기 변경 시 반응하게 하려면 추가)
-    // window.addEventListener('resize', handleResize);
-    // return () => window.removeEventListener('resize', handleResize);
   }, []);
 
   const findActiveHeading = useCallback(() => {

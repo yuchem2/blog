@@ -104,7 +104,6 @@ export default async function PostPage({ params }: { params: Promise<{ id: strin
           <NotionBlockRenderer blocks={blocks} />
         </div>
 
-        {/* 연관된 게시글 및 역방향 링크 섹션 */}
         <RelatedPosts backlinks={backlinks} relatedPosts={relatedPosts} />
 
         <Comments postId={post.id} />

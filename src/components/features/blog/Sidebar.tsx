@@ -2,7 +2,7 @@ import Link from 'next/link';
 import clsx from 'clsx';
 import { getDatabaseProperties, BlogPost } from '@/lib/notion-server';
 import { NOTION_DATA_SOURCE_ID } from '@/lib/env';
-import { GraphView } from './GraphView'; // 같은 폴더로 이동 예정
+import { GraphView } from './GraphView';
 
 interface SidebarProps {
   currentCategory?: string;

@@ -14,7 +14,7 @@ export async function GET(req: NextRequest) {
     const comments = await getComments(postId);
     return NextResponse.json(comments);
   } catch (error) {
-    console.error('Error fetching comments:', error); // 에러 로깅 추가
+    console.error('Error fetching comments:', error);
     return NextResponse.json({ error: 'Failed to fetch comments' }, { status: 500 });
   }
 }
@@ -32,7 +32,7 @@ export async function POST(req: NextRequest) {
 
     return NextResponse.json({ success: true });
   } catch (error) {
-    console.error('Error creating comment:', error); // 에러 로깅 추가
+    console.error('Error creating comment:', error);
     return NextResponse.json({ error: 'Failed to create comment' }, { status: 500 });
   }
 }
@@ -54,7 +54,7 @@ export async function DELETE(req: NextRequest) {
 
     return NextResponse.json({ success: true });
   } catch (error) {
-    console.error('Error deleting comment:', error); // 에러 로깅 추가
+    console.error('Error deleting comment:', error);
     return NextResponse.json({ error: 'Failed to delete comment' }, { status: 500 });
   }
 }
@@ -76,7 +76,7 @@ export async function PUT(req: NextRequest) {
 
     return NextResponse.json({ success: true });
   } catch (error) {
-    console.error('Error updating comment:', error); // 에러 로깅 추가
+    console.error('Error updating comment:', error);
     return NextResponse.json({ error: 'Failed to update comment' }, { status: 500 });
   }
 }

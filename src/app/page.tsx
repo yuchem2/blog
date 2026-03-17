@@ -6,7 +6,7 @@ import { NOTION_DATA_SOURCE_ID } from '@/lib/env';
 import { Sidebar } from '@/components/features/blog/Sidebar';
 import { Pagination } from '@/components/features/blog/Pagination';
 import { ViewCounter } from '@/components/features/post/ViewCounter';
-import { formatDate } from '@/lib/utils'; // formatDate import
+import { formatDate } from '@/lib/utils';
 
 export const revalidate = 3600;
 
@@ -64,7 +64,7 @@ export default async function HomePage({ searchParams }: HomePageProps) {
                 <article key={post.id} className="group cursor-pointer">
                   <Link href={`/post/${post.id}`}>
                     <div className="flex items-center gap-2 text-sm text-text-sub tabular-nums mb-1">
-                      <span>{formatDate(post.createdAt)}</span> {/* formatDate 사용 */}
+                      <span>{formatDate(post.createdAt)}</span>
                       <span>•</span>
                       <ViewCounter slug={post.id} increment={false} />
                     </div>

@@ -3,7 +3,7 @@
 import { useState, useEffect, useCallback, type ChangeEvent, type FormEvent } from 'react';
 import { Button } from '../../ui/Button';
 import clsx from 'clsx';
-import { formatDate } from '@/lib/utils'; // formatDate import
+import { formatDate } from '@/lib/utils';
 
 interface Comment {
   id: string;
@@ -237,7 +237,7 @@ function CommentItem({ comment, postId, onRefresh }: { comment: Comment; postId:
       <div className="flex justify-between items-center">
         <span className="font-bold">{comment.username}</span>
         <div className="flex items-center gap-2 text-sm text-text-sub">
-          <span>{formatDate(comment.createdAt, true)}</span> {/* formatDate 사용 (시간 포함) */}
+          <span>{formatDate(comment.createdAt, true)}</span>
           {!isEditing && !isDeleting && (
             <>
               <button

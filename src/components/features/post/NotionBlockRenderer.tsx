@@ -9,7 +9,7 @@ interface NotionBlockRendererProps {
 }
 
 export function NotionBlockRenderer({ blocks, level = 0 }: NotionBlockRendererProps) {
-  const renderedBlocks: ReactNode[] = []; // 타입 명시
+  const renderedBlocks: ReactNode[] = [];
   let listGroup: BlockWithChildren[] = [];
   let listType: 'bulleted_list_item' | 'numbered_list_item' | null = null;
 

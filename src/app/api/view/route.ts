@@ -14,7 +14,7 @@ export async function GET(req: NextRequest) {
     const views = await getViews(slug);
     return NextResponse.json({ views });
   } catch (error) {
-    console.error('Error fetching views:', error); // 에러 로깅 추가
+    console.error('Error fetching views:', error);
     return NextResponse.json({ error: 'Error fetching views' }, { status: 500 });
   }
 }
@@ -30,7 +30,7 @@ export async function POST(req: NextRequest) {
     const views = await incrementViews(slug);
     return NextResponse.json({ views });
   } catch (error) {
-    console.error('Error incrementing views:', error); // 에러 로깅 추가
+    console.error('Error incrementing views:', error);
     return NextResponse.json({ error: 'Error incrementing views' }, { status: 500 });
   }
 }
