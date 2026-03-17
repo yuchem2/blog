@@ -3,6 +3,9 @@ import { ProfileSection } from '@/components/features/about/ProfileSection';
 export const metadata = {
   title: 'About',
   description: 'About Jaehyun Yoon (Yunio)',
+  alternates: {
+    canonical: '/about',
+  },
 };
 
 export default function AboutPage() {
