@@ -58,8 +58,29 @@ export default async function PostPage({ params }: { params: Promise<{ id: strin
   // 연관된 게시글과 역방향 게시글 정보 가져오기
   const [relatedPosts, backlinks] = await Promise.all([getPostsByIds(post.relatedPosts), getPostsByIds(post.backlinks)]);
 
+  const jsonLd = {
+    '@context': 'https://schema.org',
+    '@type': 'BlogPosting',
+    headline: post.title,
+    description: post.description,
+    datePublished: post.createdAt,
+    dateModified: post.updatedAt,
+    author: {
+      '@type': 'Person',
+      name: 'Jaehyun Yoon',
+      url: 'https://yunio.dev/about',
+    },
+    url: `https://yunio.dev/post/${post.id}`,
+    publisher: {
+      '@type': 'Organization',
+      name: "yunio's blog",
+      url: 'https://yunio.dev',
+    },
+  };
+
   return (
     <div className="relative flex justify-center">
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
       <article className="w-full">
         <header className="mb-10 text-center">
           <div className="flex justify-center items-center gap-2 mb-4 text-sm">
