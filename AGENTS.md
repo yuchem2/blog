@@ -1,4 +1,4 @@
-# 🤖 Agent Development Guidelines
+ 🤖 Agent Development Guidelines
 
 This document defines the core principles and guidelines for the Gemini AI agent when developing this project.
 
