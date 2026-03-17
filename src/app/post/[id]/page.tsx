@@ -42,6 +42,7 @@ export async function generateMetadata({ params }: { params: Promise<{ id: strin
       publishedTime: post.createdAt,
       modifiedTime: post.updatedAt,
       authors: ['Jaehyun Yoon'],
+      images: [{ url: `/post/${id}/opengraph-image` }],
     },
     twitter: {
       card: 'summary_large_image',
