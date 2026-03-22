@@ -103,3 +103,19 @@
     transition: background-color 0.3s ease, color 0.3s ease;
   }
 }
+
+/* 광고 레이아웃: Tailwind v4 responsive variant 충돌 방지용 */
+.ad-side {
+  display: none;
+}
+.ad-bottom {
+  display: block;
+}
+@media (min-width: 1536px) {
+  .ad-side {
+    display: block;
+  }
+  .ad-bottom {
+    display: none;
+  }
+}

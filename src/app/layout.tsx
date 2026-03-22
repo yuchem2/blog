@@ -1,12 +1,14 @@
 import type { Metadata } from 'next';
 import type { ReactNode } from 'react';
 import localFont from 'next/font/local';
+import Script from 'next/script';
 import { GoogleAnalytics } from '@next/third-parties/google';
 
 import { Providers } from '@/components/layout/Providers';
 import { Header } from '@/components/layout/Header';
 import { Footer } from '@/components/layout/Footer';
 import { ScrollToTop } from '@/components/layout/ScrollToTop';
+import { AdLayout } from '@/components/features/ads/AdLayout';
 import { NEXT_PUBLIC_GA_ID } from '@/lib/env';
 import './globals.css';
 
@@ -71,6 +73,9 @@ export const metadata: Metadata = {
     ],
   },
   manifest: '/manifest.json',
+  other: {
+    'google-adsense-account': 'ca-pub-5515855617203843',
+  },
 };
 
 export default function RootLayout({
@@ -88,8 +93,15 @@ export default function RootLayout({
           </div>
           <main className="w-full max-w-3xl lg:max-w-4xl xl:max-w-5xl mx-auto px-8 pt-8 pb-16 flex-grow">{children}</main>
           <Footer />
+          <AdLayout />
         </Providers>
         {NEXT_PUBLIC_GA_ID && <GoogleAnalytics gaId={NEXT_PUBLIC_GA_ID} />}
+        <Script
+          async
+          src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5515855617203843"
+          crossOrigin="anonymous"
+          strategy="afterInteractive"
+        />
       </body>
     </html>
   );
