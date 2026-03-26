@@ -19,15 +19,27 @@ export function AdBanner({ adSlot, adFormat = 'auto', className = '' }: AdBanner
   const isLoaded = useRef(false);
 
   useEffect(() => {
-    if (isLoaded.current) return;
-    if (!adRef.current) return;
+    const el = adRef.current;
+    if (!el) return;
 
-    try {
-      (window.adsbygoogle = window.adsbygoogle || []).push({});
-      isLoaded.current = true;
-    } catch (e) {
-      console.error('AdSense error:', e);
-    }
+    const observer = new IntersectionObserver((entries) => {
+      if (isLoaded.current) {
+        observer.disconnect();
+        return;
+      }
+      if (entries[0]?.isIntersecting) {
+        try {
+          (window.adsbygoogle = window.adsbygoogle || []).push({});
+          isLoaded.current = true;
+        } catch (e) {
+          console.error('AdSense error:', e);
+        }
+        observer.disconnect();
+      }
+    });
+
+    observer.observe(el);
+    return () => observer.disconnect();
   }, []);
 
   if (!adSlot || adSlot.startsWith('YOUR_')) return null;
