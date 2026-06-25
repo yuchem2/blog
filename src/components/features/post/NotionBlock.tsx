@@ -135,7 +135,12 @@ export function NotionBlock({ block, level = 0 }: { block: BlockWithChildren; le
       const language = block.code.language;
       return <CodeBlock language={language} code={codeContent} />;
     case 'image':
-      const imageUrl = block.image.type === 'external' ? block.image.external.url : block.image.file.url;
+      // Notion 호스팅 파일(file)은 presigned URL이 ~1시간 후 만료되므로 프록시 경유.
+      // last_edited_time을 버전으로 붙여 이미지 교체 시 CDN 캐시를 무효화한다.
+      const imageUrl =
+        block.image.type === 'external'
+          ? block.image.external.url
+          : `/api/notion-image?blockId=${block.id}&v=${encodeURIComponent(block.last_edited_time)}`;
       const caption = block.image.caption.length > 0 ? block.image.caption[0].plain_text : '';
       return <ImageBlock imageUrl={imageUrl} caption={caption} />;
     case 'divider':
