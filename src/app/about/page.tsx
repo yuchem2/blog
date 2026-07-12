@@ -8,6 +8,107 @@ export const metadata = {
   },
 };
 
+const SKILLS: { category: string; items: string[] }[] = [
+  { category: 'Language', items: ['JavaScript', 'TypeScript', 'Python', 'C/C++'] },
+  { category: 'Backend', items: ['Express', 'NestJS', 'Django', 'FastAPI'] },
+  { category: 'Frontend', items: ['Next.js', 'React', 'React Native'] },
+  { category: 'Infra', items: ['AWS', 'Docker'] },
+  { category: 'Database', items: ['MongoDB', 'Redis', 'MySQL'] },
+];
+
+const PROJECTS: { title: string; period: string; meta: string; description: string[]; isLast?: boolean }[] = [
+  {
+    title: 'convene — 동아리 내부 협업용 화상회의·AI 회의록 플랫폼',
+    period: '2026.05 - 현재',
+    meta: '1인 풀스택',
+    description: [
+      '기획부터 배포까지 전 과정을 직접 수행하고, 규약 문서와 TDD를 이용해 품질 일관성 유지',
+      '백엔드를 DDD 4계층 + Bounded Context로 구조화하고 도메인 이벤트·Port로 격리해 핵심 로직 수정 없이 교체·확장 가능한 구조 확보',
+    ],
+  },
+  {
+    title: 'express-cargo — Express 클래스 기반 요청 바인딩 라이브러리',
+    period: '2025.06 - 현재',
+    meta: '오픈소스 · 코어 로직 · 5인',
+    description: [
+      '재귀 바인딩 파이프라인과 변환·바인딩·검증 관심사 분리를 설계하고, 검증 책임을 DTO로 옮겨 컨트롤러 검증 코드 약 80% 제거',
+      '데코레이터 오용을 서버 시작 시점에 차단하는 정적 검증 시스템 설계, npm 공개 후 2025 오픈소스 개발자 대회 동상 수상',
+    ],
+  },
+  {
+    title: 'Plum — 실시간 온라인 화상강의 플랫폼',
+    period: '2025.12 - 2026.02',
+    meta: '백엔드 · 4인 · 네이버 부스트캠프',
+    description: [
+      '기능 흐름도·데이터 스키마 설계를 맡고, Mediasoup 기반 SFU 미디어 서버로 50명 이상 동시 접속 데모 검증',
+      '온프레미스 Faster-whisper + 5분 배치·1분 스트림 이중 구조로 강의 종료 후 3분 내 요약 제공',
+    ],
+  },
+  {
+    title: 'Fienmee — 행사·축제 커뮤니티 플랫폼',
+    period: '2024.08 - 2025.12',
+    meta: '풀스택 · 7인',
+    description: [
+      '공공데이터 통합 스키마 자동 갱신 배치와 Next.js, React Native 브릿지 인증 동기화',
+      'FCM 푸시 크로스 플랫폼 구조 설계',
+      'Windows 전용 빌드 실패를 CMake 로그 분석으로 RN 자체 결함으로 규명, 패치 마이그레이션으로 팀 개발 환경 일치',
+    ],
+  },
+  {
+    title: 'Doculink — Confluence 문서 관계 그래프 확장 프로그램',
+    period: '2024.12 - 2025.06',
+    meta: '풀스택 · 4인 · Atlassian Codegeist',
+    description: [
+      'Forge 실행 시간·보안 제약 아래 전통 NLP + Rovo AI 프롬프트 이중 트랙 키워드 추출 설계',
+      '비동기 액션 워크플로우로 실행 시간 제한을 해결하고 Three.js로 문서 관계 그래프 시각화',
+    ],
+    isLast: true,
+  },
+];
+
+const ACTIVITIES: { title: string; period: string; description: string }[] = [
+  {
+    title: 'Beyond_Imagination',
+    period: '2024.09 - 현재 · 팀·개인 프로젝트',
+    description:
+      '칸반보드와 스크럼으로 이슈를 관리하고, PR 코드 리뷰와 Conventional Commits로 협업. 세미나·스터디·멘토링 등 활동에 참여하여 개발 역량 성장',
+  },
+  {
+    title: 'Programming Language Center',
+    period: '2023.03 - 2024.12 · 운영진 · 학부 대표',
+    description: '2년간 전공·언어 질의응답 멘토링, 마지막 1년은 학부 대표로 근무·상담 기록 관리와 운영 총괄',
+  },
+  {
+    title: 'AML 연구실 (구 ICPS 연구실)',
+    period: '2022.03 - 2022.12 · 학부연구생',
+    description:
+      '청각장애인 대상 수어 동시통역 연구에서 데이터 수집·전처리 파이프라인을 구축하고, CNN 기반 인식 모델을 파인튜닝하며 여러 모델을 비교 실험해 인식 성능을 검증',
+  },
+];
+
+const EDUCATION: { title: string; period: string; description: string }[] = [
+  {
+    title: '네이버 부스트캠프 웹 풀스택 10기 · 네이버커넥트재단',
+    period: '2025.07 - 2026.02',
+    description: 'JS/TS 기반 웹 풀스택 과정 이수',
+  },
+  {
+    title: '고려대학교 세종캠퍼스 · 컴퓨터융합소프트웨어학과 학사 졸업',
+    period: '2019.03 - 2025.02',
+    description: 'GPA 4.4 / 4.5',
+  },
+  {
+    title: '마포고등학교 · 졸업',
+    period: '2015.03 - 2018.02',
+    description: '',
+  },
+];
+
+const AWARDS: { title: string; detail: string; date: string }[] = [
+  { title: '2025 오픈소스 개발자 대회 동상', detail: 'express-cargo', date: '2025' },
+  { title: '졸업 특대생 표창', detail: '고려대학교 과학기술대학 졸업 특대생 선정', date: '2025.02' },
+];
+
 export default function AboutPage() {
   return (
     <div className="py-12 space-y-20">
@@ -16,27 +117,13 @@ export default function AboutPage() {
       {/* Skills Section */}
       <section className="space-y-8">
         <h2 className="text-3xl font-bold border-b border-border-main pb-4">Skills</h2>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-          <div className="bg-bg-sub p-6 rounded-xl border border-border-main">
-            <h3 className="font-bold text-xl mb-4 flex items-center gap-2">Backend & Infra</h3>
-            <div className="flex flex-wrap gap-2">
-              {['Node.js', 'Express', 'Nest.js', 'MongoDB', 'MySQL', 'Redis', 'AWS (S3, EC2, CloudFront, Lambda)'].map((skill) => (
-                <span key={skill} className="px-3 py-1 bg-bg-main rounded-md text-sm font-medium border border-border-main">
-                  {skill}
-                </span>
-              ))}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-x-10 gap-y-4">
+          {SKILLS.map((group) => (
+            <div key={group.category} className="flex items-baseline gap-4">
+              <h3 className="w-24 flex-shrink-0 font-bold text-primary">{group.category}</h3>
+              <p className="text-text-main">{group.items.join(' · ')}</p>
             </div>
-          </div>
-          <div className="bg-bg-sub p-6 rounded-xl border border-border-main">
-            <h3 className="font-bold text-xl mb-4 flex items-center gap-2">Frontend</h3>
-            <div className="flex flex-wrap gap-2">
-              {['JavaScript', 'TypeScript', 'React.js', 'Next.js'].map((skill) => (
-                <span key={skill} className="px-3 py-1 bg-bg-main rounded-md text-sm font-medium border border-border-main">
-                  {skill}
-                </span>
-              ))}
-            </div>
-          </div>
+          ))}
         </div>
       </section>
 
@@ -44,109 +131,52 @@ export default function AboutPage() {
       <section className="space-y-8">
         <h2 className="text-3xl font-bold border-b border-border-main pb-4">Projects</h2>
         <div className="space-y-0">
-          <ProjectItem
-            title="Express용 클래스 기반 데이터 바인딩 라이브러리 (express-cargo)"
-            period="2025.06 - 현재"
-            role="Core Logic Developer"
-            techStack={['TypeScript', 'Reflect-metadata']}
-            description={[
-              'TypeScript 데코레이터를 활용한 선언적 데이터 바인딩 구조 설계, 반복 코드 50% 감소',
-              '재귀 로직 기반의 통합 데이터 처리 시스템 구축',
-              'NPM 오픈소스 배포 및 오픈소스 개발자 대회 동상 수상',
-            ]}
-          />
-          <ProjectItem
-            title="실시간 온라인 교육 플랫폼 (plum)"
-            period="2025.12 - 2026.02"
-            role="Backend Developer"
-            techStack={['Nest.js', 'React', 'Redis', 'mediasoup']}
-            description={[
-              'mediasoup 기반 SFU 미디어 서버 및 WebSocket 게이트웨이 구축 (40명+ 동시 접속)',
-              '음성 데이터 배치 처리로 STT 부하 분산 및 요약 대기 시간 단축',
-              'Redis를 활용한 동적 데이터 전담 처리 아키텍처 설계',
-            ]}
-          />
-          <ProjectItem
-            title="행사 축제 커뮤니티 서비스 (Fienmee)"
-            period="2024.08 - 2025.12"
-            role="Full Stack Developer"
-            techStack={['Express', 'Next.js', 'React Native', 'MongoDB']}
-            description={[
-              '외부 데이터 수집·가공 및 통합 스키마 기반 자동화 배치 로직 구현',
-              'Next.js 웹뷰와 React Native 간 Bridge 통신 구현',
-              'express-cargo 도입을 통한 데이터 검증 로직 리팩토링',
-            ]}
-          />
-          <ProjectItem
-            title="문서 관계 그래프 생성 extension (Doculink)"
-            period="2024.12 - 2025.06"
-            role="Full Stack Developer"
-            techStack={['Forge', 'Node.js', 'React', 'Three.js']}
-            description={[
-              'Atlassian Rovo 도입으로 문서 연관성 분석 정확도 개선',
-              'Three.js 기반 2D/3D 그래프 노드 시각화 재설계',
-              '키워드 가중치 기반 연관성 계산 로직 최적화',
-            ]}
-            isLast={true}
-          />
+          {PROJECTS.map((project) => (
+            <ProjectItem key={project.title} {...project} />
+          ))}
         </div>
       </section>
 
-      {/* Experience & Activities Section */}
+      {/* Activities Section */}
       <section className="space-y-8">
-        <h2 className="text-3xl font-bold border-b border-border-main pb-4">Experience & Activities</h2>
+        <h2 className="text-3xl font-bold border-b border-border-main pb-4">Activities</h2>
         <div className="space-y-8">
-          <ActivityItem
-            title="네이버 부스트캠프 웹 풀스택 10기"
-            period="2025.06 - 2026.02"
-            description="설계 우선 개발 프로세스 경험, CS 지식 심화 학습, 코드 리뷰 및 팀 협업 경험"
-          />
-          <ActivityItem
-            title="Programming Language Center"
-            period="2023.03 - 2024.12"
-            description="학기별 100명 이상의 수강생 대상 기술 멘토링, 디버깅 지원 및 운영 가이드라인 마련"
-          />
-          <ActivityItem
-            title="ICPS 연구실 학부연구생"
-            period="2023.03 - 2023.12"
-            description="수어 인식 모델 고도화를 위한 데이터 수집 및 전처리, 모델 정확도 검증 실험 주도"
-          />
+          {ACTIVITIES.map((activity) => (
+            <ActivityItem key={activity.title} {...activity} />
+          ))}
         </div>
       </section>
 
-      {/* Education & Awards Section */}
+      {/* Education Section */}
       <section className="space-y-8">
-        <h2 className="text-3xl font-bold border-b border-border-main pb-4">Education & Awards</h2>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-          <div>
-            <h3 className="font-bold text-xl mb-4">Education</h3>
-            <div className="space-y-2">
-              <p className="font-semibold">고려대학교 세종캠퍼스</p>
-              <p className="text-text-sub">컴퓨터융합소프트웨어학과</p>
-              <p className="text-sm text-text-sub">2019.03 - 2025.02</p>
-              <p className="text-sm text-primary mt-1">전공 평점 4.4/4.5</p>
+        <h2 className="text-3xl font-bold border-b border-border-main pb-4">Education</h2>
+        <div className="space-y-6">
+          {EDUCATION.map((edu) => (
+            <div key={edu.title}>
+              <div className="flex flex-wrap items-baseline gap-x-3">
+                <h3 className="text-lg font-bold">{edu.title}</h3>
+                <span className="text-sm text-text-sub">{edu.period}</span>
+              </div>
+              {edu.description && <p className="text-sm text-primary mt-1">{edu.description}</p>}
             </div>
-          </div>
-          <div>
-            <h3 className="font-bold text-xl mb-4">Awards</h3>
-            <ul className="space-y-3">
-              <li>
-                <p className="font-semibold">2025 오픈소스 개발자 대회 동상</p>
-                <p className="text-sm text-text-sub">한국오픈소스협회</p>
-              </li>
-              <li>
-                <p className="font-semibold">졸업 특대생 표창</p>
-                <p className="text-sm text-text-sub">고려대학교</p>
-              </li>
-              <li>
-                <p className="font-semibold">학기 최우등생 학장상 (2회)</p>
-              </li>
-              <li>
-                <p className="font-semibold">학기 학과 최우등생 표창 (7회)</p>
-              </li>
-            </ul>
-          </div>
+          ))}
         </div>
+      </section>
+
+      {/* Awards Section */}
+      <section className="space-y-8">
+        <h2 className="text-3xl font-bold border-b border-border-main pb-4">Awards</h2>
+        <ul className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          {AWARDS.map((award) => (
+            <li key={award.title}>
+              <div className="flex flex-wrap items-baseline gap-x-2">
+                <p className="font-semibold">{award.title}</p>
+                {award.date && <span className="text-sm text-text-sub">{award.date}</span>}
+              </div>
+              {award.detail && <p className="text-sm text-text-sub">{award.detail}</p>}
+            </li>
+          ))}
+        </ul>
       </section>
     </div>
   );
@@ -155,15 +185,13 @@ export default function AboutPage() {
 function ProjectItem({
   title,
   period,
-  role,
-  techStack,
+  meta,
   description,
   isLast = false,
 }: {
   title: string;
   period: string;
-  role: string;
-  techStack: string[];
+  meta: string;
   description: string[];
   isLast?: boolean;
 }) {
@@ -184,17 +212,10 @@ function ProjectItem({
       {/* 내용 */}
       <div className={isLast ? 'pb-0' : 'pb-12'}>
         <h3 className="text-xl font-bold">{title}</h3>
-        <div className="flex flex-wrap gap-2 items-center mt-2 mb-3 text-sm">
+        <div className="flex flex-wrap gap-2 items-center mt-2 mb-4 text-sm">
           <span className="text-text-sub">{period}</span>
           <span className="w-1 h-1 rounded-full bg-text-sub" />
-          <span className="text-primary font-medium">{role}</span>
-        </div>
-        <div className="flex flex-wrap gap-2 mb-4">
-          {techStack.map((tech) => (
-            <span key={tech} className="px-2 py-0.5 bg-bg-sub rounded text-xs text-text-sub border border-border-main">
-              {tech}
-            </span>
-          ))}
+          <span className="text-primary font-medium">{meta}</span>
         </div>
         <ul className="list-disc list-outside ml-4 space-y-1 text-text-main">
           {description.map((desc, i) => (
