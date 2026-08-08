@@ -4,6 +4,7 @@ import { ReactNode, useState, useCallback } from 'react';
 import { RichTextItemResponse } from '@notionhq/client/build/src/api-endpoints';
 import { BlockWithChildren } from '@/lib/notion-server';
 import clsx from 'clsx';
+import { Info, Link as LinkIcon } from 'lucide-react';
 
 import { CodeBlock } from './CodeBlock';
 import { Equation } from './Equation';
@@ -80,6 +81,15 @@ function ImageBlock({ imageUrl, caption }: { imageUrl: string; caption: string }
   );
 }
 
+// Notion API는 북마크의 og 메타데이터를 주지 않으므로 URL에서 표시용 도메인만 뽑아 쓴다.
+function getHostname(url: string) {
+  try {
+    return new URL(url).hostname.replace(/^www\./, '');
+  } catch {
+    return url;
+  }
+}
+
 export function NotionBlock({ block, level = 0 }: { block: BlockWithChildren; level?: number }) {
   switch (block.type) {
     case 'paragraph':
@@ -153,6 +163,39 @@ export function NotionBlock({ block, level = 0 }: { block: BlockWithChildren; le
       return <ImageBlock imageUrl={imageUrl} caption={caption} />;
     case 'equation':
       return <Equation expression={block.equation.expression} displayMode />;
+    case 'callout':
+      return (
+        <div className="my-4 p-4 flex gap-3 bg-bg-sub border border-border-main rounded-lg">
+          <div className="shrink-0 text-xl leading-7">
+            {block.callout.icon?.type === 'emoji' ? block.callout.icon.emoji : <Info className="w-5 h-5 mt-0.5 text-primary" />}
+          </div>
+          <div className="min-w-0 flex-1 [&>*:last-child]:mb-0">
+            {block.callout.rich_text.length > 0 && (
+              <p className="mb-2 leading-relaxed text-text-main">
+                <RichText text={block.callout.rich_text} />
+              </p>
+            )}
+            {block.children && block.children.length > 0 && <NotionBlockRenderer blocks={block.children} level={level} />}
+          </div>
+        </div>
+      );
+    case 'bookmark':
+      return (
+        <a
+          href={block.bookmark.url}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="my-4 flex items-center gap-3 p-4 bg-bg-sub border border-border-main rounded-lg hover:border-primary transition-colors"
+        >
+          <LinkIcon className="w-4 h-4 shrink-0 text-text-sub" />
+          <span className="min-w-0 flex-1">
+            <span className="block truncate text-text-main">
+              {block.bookmark.caption.length > 0 ? <RichText text={block.bookmark.caption} /> : getHostname(block.bookmark.url)}
+            </span>
+            <span className="block truncate text-sm text-text-sub">{block.bookmark.url}</span>
+          </span>
+        </a>
+      );
     case 'divider':
       return <hr className="my-8 border-t border-border-main" />;
     case 'table':
@@ -188,7 +231,8 @@ export function NotionBlock({ block, level = 0 }: { block: BlockWithChildren; le
     case 'column':
       return <div className="flex-1 min-w-0">{block.children && <NotionBlockRenderer blocks={block.children} level={level} />}</div>;
     default:
+      // 미지원 블록이라도 자식까지 버리지는 않는다. 부모 하나를 놓치면 그 아래 본문이 통째로 아무 흔적 없이 사라지기 때문이다.
       console.warn(`Unsupported block type: ${block.type}`);
-      return null;
+      return block.children && block.children.length > 0 ? <NotionBlockRenderer blocks={block.children} level={level} /> : null;
   }
 }
