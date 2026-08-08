@@ -6,6 +6,7 @@ import { BlockWithChildren } from '@/lib/notion-server';
 import clsx from 'clsx';
 
 import { CodeBlock } from './CodeBlock';
+import { Equation } from './Equation';
 import { NotionBlockRenderer } from './NotionBlockRenderer';
 
 function RichText({ text }: { text: RichTextItemResponse[] }) {
@@ -15,7 +16,8 @@ function RichText({ text }: { text: RichTextItemResponse[] }) {
     <>
       {text.map((t, i) => {
         const { annotations } = t;
-        let content: ReactNode = t.plain_text;
+        // 인라인 수식의 plain_text는 LaTeX 원문이므로 그대로 쓰면 수식이 아닌 소스가 노출된다.
+        let content: ReactNode = t.type === 'equation' ? <Equation expression={t.equation.expression} /> : t.plain_text;
 
         if (annotations.bold) content = <strong key={i}>{content}</strong>;
         if (annotations.italic) content = <em key={i}>{content}</em>;
@@ -128,6 +130,12 @@ export function NotionBlock({ block, level = 0 }: { block: BlockWithChildren; le
       return (
         <blockquote className="border-l-4 border-primary pl-4 pr-4 py-1 my-4 bg-bg-sub italic text-text-main">
           <RichText text={block.quote.rich_text} />
+          {/* 인용문 아래 들여쓴 블록(수식·리스트 등). 기울임은 인용 본문에만 적용한다. */}
+          {block.children && block.children.length > 0 && (
+            <div className="mt-2 not-italic [&>*:last-child]:mb-0">
+              <NotionBlockRenderer blocks={block.children} level={level} />
+            </div>
+          )}
         </blockquote>
       );
     case 'code':
@@ -143,6 +151,8 @@ export function NotionBlock({ block, level = 0 }: { block: BlockWithChildren; le
           : `/api/notion-image?blockId=${block.id}&v=${encodeURIComponent(block.last_edited_time)}`;
       const caption = block.image.caption.length > 0 ? block.image.caption[0].plain_text : '';
       return <ImageBlock imageUrl={imageUrl} caption={caption} />;
+    case 'equation':
+      return <Equation expression={block.equation.expression} displayMode />;
     case 'divider':
       return <hr className="my-8 border-t border-border-main" />;
     case 'table':

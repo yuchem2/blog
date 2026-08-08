@@ -125,6 +125,19 @@
   }
 }
 
+/*
+  KaTeX: 색상은 지정하지 않아 본문 색(--text-main)을 그대로 상속받는다.
+*/
+.katex {
+  font-size: 1.1em;
+}
+.katex-display {
+  margin: 0;
+}
+.katex-display > .katex {
+  padding-right: 2px;
+}
+
 /* 광고 레이아웃: Tailwind v4 responsive variant 충돌 방지용 */
 .ad-side {
   display: none;
