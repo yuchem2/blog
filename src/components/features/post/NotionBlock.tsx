@@ -50,29 +50,40 @@ function RichText({ text }: { text: RichTextItemResponse[] }) {
   );
 }
 
-function ImageBlock({ imageUrl, caption }: { imageUrl: string; caption: string }) {
-  const [isLoading, setIsLoading] = useState(true);
+type ImageStatus = 'loading' | 'loaded' | 'error';
 
-  // ref 콜백을 사용하여 DOM 노드가 생성될 때 이미 로드되었는지 확인
-  const imageRef = useCallback((node: HTMLImageElement) => {
-    if (node !== null) {
-      if (node.complete) {
-        setIsLoading(false);
-      }
+function ImageBlock({ imageUrl, caption }: { imageUrl: string; caption: string }) {
+  const [status, setStatus] = useState<ImageStatus>('loading');
+  const isLoading = status === 'loading';
+
+  // 하이드레이션 전에 로드/실패가 끝나면 onLoad·onError를 놓치므로 DOM 노드가 붙을 때 상태를 직접 확인한다.
+  // complete는 실패한 이미지에도 true이므로 naturalWidth로 성공 여부를 구분한다.
+  const imageRef = useCallback((node: HTMLImageElement | null) => {
+    if (node?.complete) {
+      setStatus(node.naturalWidth > 0 ? 'loaded' : 'error');
     }
   }, []);
 
   return (
     <figure className="my-8 flex flex-col items-center w-full">
-      <div className={clsx('relative w-full flex justify-center', isLoading && 'min-h-[200px]')}>
+      <div className={clsx('relative w-full flex justify-center', status !== 'loaded' && 'min-h-[200px]')}>
         {isLoading && <div className="absolute inset-0 bg-bg-sub animate-pulse rounded-lg w-full h-full" />}
+        {status === 'error' && (
+          <div className="absolute inset-0 flex items-center justify-center bg-bg-sub rounded-lg text-sm text-text-sub">
+            이미지를 불러오지 못했습니다.
+          </div>
+        )}
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img
           ref={imageRef}
           src={imageUrl}
           alt={caption}
-          className={clsx('rounded-lg max-w-full h-auto object-contain transition-opacity duration-500', isLoading ? 'opacity-0' : 'opacity-100')}
-          onLoad={() => setIsLoading(false)}
+          className={clsx(
+            'rounded-lg max-w-full h-auto object-contain transition-opacity duration-500',
+            status === 'loaded' ? 'opacity-100' : 'opacity-0',
+          )}
+          onLoad={() => setStatus('loaded')}
+          onError={() => setStatus('error')}
           loading="lazy"
         />
       </div>
